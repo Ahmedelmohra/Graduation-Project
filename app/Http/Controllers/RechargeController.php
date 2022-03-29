@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
 use Illuminate\Http\Request;
+use App\Models\recharge;
 use Illuminate\Support\Facades\Validator;
 
-class PaymentsController extends Controller
+class RechargeController extends Controller
 {
-    /**
+   /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $Payment = new Payment();
-        $Payments = $Payment->getAll();
-        return $Payments;
+        $recharge = new recharge();
+        $recharge = $recharge->getAll();
+        return $recharge;
     }
 
     /**
@@ -32,13 +32,13 @@ class PaymentsController extends Controller
         $data = $request->all();
         
         $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
-            'client_id' => 'required|string'
+            'data' => 'required|string',
+            'total' => 'required|numeric',
+            // 'company_id' => 'required|numeric',
+            // 'network' => 'required|string',
+            // 'operation_num' => 'required|numeric',
+            // 'service_id' => 'required|string',
+            // 'client_id' => 'required|string'
         ]);
 
         if($validator->fails()){
@@ -49,33 +49,33 @@ class PaymentsController extends Controller
             ], 400);
         }
         else{
-            $Payment = new Payment();
-            $createPayment = $Payment->create($data);
+            $recharge = new recharge();
+            $createrecharge = $recharge->create($data);
         }
-        if ($createPayment)
-            return response()->json(['success' => true, 'data' => $createPayment], 200);
+        if ($createrecharge)
+            return response()->json(['success' => true, 'data' => $createrecharge], 200);
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * Display the Payment resource.
+     * Display the recharge resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $Payment = new Payment();
-        $Payment = $Payment->find($id);
-        if ($Payment)
-            return $Payment;
+        $recharge = new recharge();
+        $recharge = $recharge->find($id);
+        if ($recharge)
+            return $recharge;
         else
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'recharge not found'], 404);
     }
 
     /**
-     * Update the Payment resource in storage.
+     * Update the recharge resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -85,13 +85,13 @@ class PaymentsController extends Controller
     {
         $data = $request->all();
         $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
-            'client_id' => 'required|string'
+            'total' => 'required|numeric|max:10',
+            'data' => 'required|string|max:10',
+            // 'company_id' => 'required|numeric',
+            // 'network' => 'required|string',
+            // 'operation_num' => 'required|numeric',
+            // 'service_id' => 'required|string',
+            // 'client_id' => 'required|string'
         ]);
 
         if($validator->fails()){
@@ -102,29 +102,29 @@ class PaymentsController extends Controller
             ], 400);
         }
         else{
-            $Payment = new Payment();
-            $updatePayment = $Payment->edit($id, $data);
+            $recharge = new recharge();
+            $updaterecharge = $recharge->edit($id, $data);
         }
 
-        if ($updatePayment)
-            return $updatePayment;
+        if ($updaterecharge)
+            return $updaterecharge;
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * get all payments of Payment
+     * get all recharge of recharge
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function payments($id)
+    public function recharge($id)
     {
-        $Payment = new Payment();
-        $payments = $Payment->payments($id);
-        if ($payments)
-            return $payments;
+        $recharge = new recharge();
+        $recharge = $recharge->recharge($id);
+        if ($recharge)
+            return $recharge;
         else
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'recharge not found'], 404);
 }
 }

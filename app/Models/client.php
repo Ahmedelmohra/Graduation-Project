@@ -2,42 +2,46 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Google\Cloud\Firestore\FirestoreClient;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\client as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Google\Cloud\Firestore\Firestoreclient;
 
-class Payment extends Model
+class client extends Model
 {
-    use HasFactory;
-    
+    use HasApiTokens, HasFactory, Notifiable;
+
     public $firstore;
     public $collection;
     public $documents;
 
     public function __construct()
     {
-        $this->firstore = new FirestoreClient();
-        $this->collection = $this->firstore->collection('payments');
+        $this->firstore = new Firestoreclient();
+        $this->collection = $this->firstore->collection('client');
         $this->documents = $this->collection->documents()->rows();
     }
 
     /**
-     * get all payment
+     * get all clients
      * 
-     * @return array of payment`
+     * @return array of clients
      */
     public function getAll()
     {
         $documents =  $this->documents;
-        $payment = [];
+        $clients = [];
         foreach ($documents as $document) {
             $id = $document->id();
-            $payment[] = [
+            $clients[] = [
                 'id' => $id,
                 'data' => $document->data()
             ];
         }
-        return $payment;
+        return $clients;
     }
 
     /**
@@ -50,7 +54,7 @@ class Payment extends Model
         $document = $this->collection->document($id)->snapshot();
         if ($document->exists()) {
             $client = [
-                'client_id' => $document->id(),
+                'id' => $document->id(),
                 'data' => $document->data()
             ];
             return $client;
@@ -103,6 +107,3 @@ class Payment extends Model
     }
 
 }
-
-    
-

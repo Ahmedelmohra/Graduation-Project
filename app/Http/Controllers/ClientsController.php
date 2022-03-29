@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\client;
 use Illuminate\Support\Facades\Validator;
 
-class UsersController extends Controller
+class ClientsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $user = new User();
-        $users = $user->getAll();
-        return $users;
+        $client = new client();
+        $clients = $client->getAll();
+        return $clients;
     }
 
     /**
@@ -35,7 +35,7 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:25',
             'password' => 'required|string',
-            'uniq_id' => 'required|string',
+            'salt' => 'required|string',
             'finger_print' => 'required|string'
         ]);
 
@@ -47,33 +47,33 @@ class UsersController extends Controller
             ], 400);
         }
         else{
-            $user = new User();
-            $createUser = $user->create($data);
+            $client = new client();
+            $createclient = $client->create($data);
         }
-        if ($createUser)
-            return response()->json(['success' => true, 'data' => $createUser], 200);
+        if ($createclient)
+            return response()->json(['success' => true, 'data' => $createclient], 200);
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * Display the user resource.
+     * Display the client resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $user = new User();
-        $user = $user->find($id);
-        if ($user)
-            return $user;
+        $client = new client();
+        $client = $client->find($id);
+        if ($client)
+            return $client;
         else
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['error' => 'client not found'], 404);
     }
 
     /**
-     * Update the user resource in storage.
+     * Update the client resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -86,29 +86,29 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:25',
             'password' => 'required|string',
-            'uniq_id' => 'required|string'
+            'salt' => 'required|string'
         ]);
-        $user = new User();
-        $updateUser = $user->edit($id, $data);
-        if ($updateUser)
-            return $updateUser;
+        $client = new client();
+        $updateclient = $client->edit($id, $data);
+        if ($updateclient)
+            return $updateclient;
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * get all payments of user
+     * get all payments of client
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function payments($id)
     {
-        $user = new User();
-        $payments = $user->payments($id);
+        $client = new client();
+        $payments = $client->payments($id);
         if ($payments)
             return $payments;
         else
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['error' => 'client not found'], 404);
     }
 }

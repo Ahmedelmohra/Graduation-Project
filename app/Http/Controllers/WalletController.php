@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
 use Illuminate\Http\Request;
+use App\Models\wallet;
 use Illuminate\Support\Facades\Validator;
 
-class PaymentsController extends Controller
+class WalletController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        $Payment = new Payment();
-        $Payments = $Payment->getAll();
-        return $Payments;
+        $wallet = new wallet();
+        $wallet = $wallet->getAll();
+        return $wallet;
     }
 
     /**
@@ -32,13 +32,13 @@ class PaymentsController extends Controller
         $data = $request->all();
         
         $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
-            'client_id' => 'required|string'
+            'balance' => 'required|numeric',
+            'client_id' => 'required|string',
+            'wallet recharge_id' => 'required|string',
+            // 'network' => 'required|string',
+            // 'operation_num' => 'required|numeric',
+            // 'service_id' => 'required|string',
+            // 'client_id' => 'required|string'
         ]);
 
         if($validator->fails()){
@@ -49,33 +49,33 @@ class PaymentsController extends Controller
             ], 400);
         }
         else{
-            $Payment = new Payment();
-            $createPayment = $Payment->create($data);
+            $wallet = new wallet();
+            $createwallet = $wallet->create($data);
         }
-        if ($createPayment)
-            return response()->json(['success' => true, 'data' => $createPayment], 200);
+        if ($createwallet)
+            return response()->json(['success' => true, 'data' => $createwallet], 200);
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * Display the Payment resource.
+     * Display the wallet resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $Payment = new Payment();
-        $Payment = $Payment->find($id);
-        if ($Payment)
-            return $Payment;
+        $wallet = new wallet();
+        $wallet = $wallet->find($id);
+        if ($wallet)
+            return $wallet;
         else
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'wallet not found'], 404);
     }
 
     /**
-     * Update the Payment resource in storage.
+     * Update the wallet resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -85,13 +85,9 @@ class PaymentsController extends Controller
     {
         $data = $request->all();
         $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
-            'client_id' => 'required|string'
+            'balance' => 'required|numeric',
+            'client_id' => 'required|string',
+            'wallet recharge_id' => 'required|string',
         ]);
 
         if($validator->fails()){
@@ -102,29 +98,31 @@ class PaymentsController extends Controller
             ], 400);
         }
         else{
-            $Payment = new Payment();
-            $updatePayment = $Payment->edit($id, $data);
+            $wallet = new wallet();
+            $updatewallet = $wallet->edit($id, $data);
         }
 
-        if ($updatePayment)
-            return $updatePayment;
+        if ($updatewallet)
+            return $updatewallet;
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * get all payments of Payment
+     * get all wallet of wallet
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function payments($id)
+    public function wallet($id)
     {
-        $Payment = new Payment();
-        $payments = $Payment->payments($id);
-        if ($payments)
-            return $payments;
+        $wallet = new wallet();
+        $wallet = $wallet->wallet($id);
+        if ($wallet)
+            return $wallet;
         else
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'wallet not found'], 404);
 }
+
+
 }

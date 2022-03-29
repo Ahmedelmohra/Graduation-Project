@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Google\Cloud\Firestore\FirestoreClient;
 
-class Payment extends Model
+class ClientRecipts extends Model
 {
-    use HasFactory;
-    
+    use HasApiTokens, HasFactory, Notifiable;
+
     public $firstore;
     public $collection;
     public $documents;
@@ -17,52 +19,52 @@ class Payment extends Model
     public function __construct()
     {
         $this->firstore = new FirestoreClient();
-        $this->collection = $this->firstore->collection('payments');
+        $this->collection = $this->firstore->collection('client_recipts');
         $this->documents = $this->collection->documents()->rows();
     }
 
     /**
-     * get all payment
+     * get all ClientRecipts
      * 
-     * @return array of payment`
+     * @return array of ClientRecipts
      */
     public function getAll()
     {
         $documents =  $this->documents;
-        $payment = [];
+        $ClientRecipts = [];
         foreach ($documents as $document) {
             $id = $document->id();
-            $payment[] = [
+            $ClientRecipts[] = [
                 'id' => $id,
                 'data' => $document->data()
             ];
         }
-        return $payment;
+        return $ClientRecipts;
     }
 
     /**
-     * get client by id
+     * get Client by id
      * 
      * @param  int $id
-     * @return array of client
+     * @return array of Client
      */
     public function find($id){
         $document = $this->collection->document($id)->snapshot();
         if ($document->exists()) {
-            $client = [
-                'client_id' => $document->id(),
+            $Client = [
+                'Client_id' => $document->id(),
                 'data' => $document->data()
             ];
-            return $client;
+            return $ClientRecipts;
         }
         return false;
     }
 
     /**
-     * create client
+     * create ClientRecipts
      * 
      * @param  array $data
-     * @return array of client
+     * @return array of ClientRecipts
      */
     public function create(array $data){
         $document = $this->collection->add($data);
@@ -70,11 +72,11 @@ class Payment extends Model
     }
 
     /**
-     * update client
+     * update ClientRecipts
      * 
      * @param  int $id
      * @param  array $data
-     * @return array of client
+     * @return array of ClientRecipts
      */
     public function edit ($id, array $data){
         $document = $this->collection->document($id);
@@ -83,15 +85,15 @@ class Payment extends Model
     }
 
     /**
-     * delete client
+     * delete ClientRecipts
      * 
      * @param  int $id
-     * @return array of client
+     * @return array of ClientRecipts
      */
     public function payments($id)
     {
         $collection = $this->firstore->collection('payments');
-        $documents = $collection->where('client_id', '==', $id)->documents()->rows();
+        $documents = $collection->where('ClientRecipts_id', '==', $id)->documents()->rows();
         $payments = [];
         foreach ($documents as $document) {
             $payments[] = [
@@ -103,6 +105,3 @@ class Payment extends Model
     }
 
 }
-
-    
-

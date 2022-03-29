@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
 use Illuminate\Http\Request;
+use App\Models\otp;
 use Illuminate\Support\Facades\Validator;
 
-class PaymentsController extends Controller
+class OtpController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        $Payment = new Payment();
-        $Payments = $Payment->getAll();
-        return $Payments;
+        $otp = new otp();
+        $otps = $otp->getAll();
+        return $otps;
     }
 
     /**
@@ -32,13 +32,13 @@ class PaymentsController extends Controller
         $data = $request->all();
         
         $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
-            'client_id' => 'required|string'
+            'otp_number' => 'required|numeric',
+            'client_id' => 'required|string',
+            // 'company_id' => 'required|numeric',
+            // 'network' => 'required|string',
+            // 'operation_num' => 'required|numeric',
+            // 'service_id' => 'required|string',
+            // 'client_id' => 'required|string'
         ]);
 
         if($validator->fails()){
@@ -49,33 +49,33 @@ class PaymentsController extends Controller
             ], 400);
         }
         else{
-            $Payment = new Payment();
-            $createPayment = $Payment->create($data);
+            $otp = new otp();
+            $createotp = $otp->create($data);
         }
-        if ($createPayment)
-            return response()->json(['success' => true, 'data' => $createPayment], 200);
+        if ($createotp)
+            return response()->json(['success' => true, 'data' => $createotp], 200);
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * Display the Payment resource.
+     * Display the otp resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $Payment = new Payment();
-        $Payment = $Payment->find($id);
-        if ($Payment)
-            return $Payment;
+        $otp = new otp();
+        $otp = $otp->find($id);
+        if ($otp)
+            return $otp;
         else
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'otp not found'], 404);
     }
 
     /**
-     * Update the Payment resource in storage.
+     * Update the otp resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -85,13 +85,13 @@ class PaymentsController extends Controller
     {
         $data = $request->all();
         $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
-            'client_id' => 'required|string'
+            'otp_number' => 'required|numeric|max:10',
+            'client_id' => 'required|string|max:10',
+            // 'company_id' => 'required|numeric',
+            // 'network' => 'required|string',
+            // 'operation_num' => 'required|numeric',
+            // 'service_id' => 'required|string',
+            // 'client_id' => 'required|string'
         ]);
 
         if($validator->fails()){
@@ -102,29 +102,29 @@ class PaymentsController extends Controller
             ], 400);
         }
         else{
-            $Payment = new Payment();
-            $updatePayment = $Payment->edit($id, $data);
+            $otp = new otp();
+            $updateotp = $otp->edit($id, $data);
         }
 
-        if ($updatePayment)
-            return $updatePayment;
+        if ($updateotp)
+            return $updateotp;
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * get all payments of Payment
+     * get all otps of otp
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function payments($id)
+    public function otps($id)
     {
-        $Payment = new Payment();
-        $payments = $Payment->payments($id);
-        if ($payments)
-            return $payments;
+        $otp = new otp();
+        $otps = $otp->otps($id);
+        if ($otps)
+            return $otps;
         else
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'otp not found'], 404);
 }
 }

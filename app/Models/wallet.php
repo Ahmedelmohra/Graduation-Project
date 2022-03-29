@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Google\Cloud\Firestore\FirestoreClient;
 
-class Service extends Model
+class wallet extends Model
 {
     use HasFactory;
     public $firstore;
@@ -16,52 +16,52 @@ class Service extends Model
     public function __construct()
     {
         $this->firstore = new FirestoreClient();
-        $this->collection = $this->firstore->collection('Service');
+        $this->collection = $this->firstore->collection('wallet');
         $this->documents = $this->collection->documents()->rows();
     }
 
     /**
-     * get all Service
+     * get all payment
      * 
-     * @return array of Service
+     * @return array of payment`
      */
     public function getAll()
     {
         $documents =  $this->documents;
-        $Service = [];
+        $payment = [];
         foreach ($documents as $document) {
             $id = $document->id();
-            $Service[] = [
+            $payment[] = [
                 'id' => $id,
                 'data' => $document->data()
             ];
         }
-        return $Service;
+        return $payment;
     }
 
     /**
-     * get user by id
+     * get client by id
      * 
      * @param  int $id
-     * @return array of user
+     * @return array of client
      */
     public function find($id){
         $document = $this->collection->document($id)->snapshot();
         if ($document->exists()) {
-            $user = [
-                'id' => $document->id(),
+            $client = [
+                'client_id' => $document->id(),
                 'data' => $document->data()
             ];
-            return $user;
+            return $client;
         }
         return false;
     }
 
     /**
-     * create user
+     * create client
      * 
      * @param  array $data
-     * @return array of user
+     * @return array of client
      */
     public function create(array $data){
         $document = $this->collection->add($data);
@@ -69,11 +69,11 @@ class Service extends Model
     }
 
     /**
-     * update user
+     * update client
      * 
      * @param  int $id
      * @param  array $data
-     * @return array of user
+     * @return array of client
      */
     public function edit ($id, array $data){
         $document = $this->collection->document($id);
@@ -82,23 +82,23 @@ class Service extends Model
     }
 
     /**
-     * delete user
+     * delete client
      * 
      * @param  int $id
-     * @return array of user
+     * @return array of client
      */
-    public function payments($id)
+    public function wallet($id)
     {
-        $collection = $this->firstore->collection('payments');
-        $documents = $collection->where('user_id', '==', $id)->documents()->rows();
-        $payments = [];
+        $collection = $this->firstore->collection('wallet');
+        $documents = $collection->where('client_id', '==', $id)->documents()->rows();
+        $wallet = [];
         foreach ($documents as $document) {
-            $payments[] = [
+            $wallet[] = [
                 'id' => $document->id(),
                 'data' => $document->data()
             ];
         }
-        return $payments;
+        return $wallet;
     }
 
 }

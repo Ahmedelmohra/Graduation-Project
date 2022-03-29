@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
 use Illuminate\Http\Request;
+use App\Models\company;
 use Illuminate\Support\Facades\Validator;
 
-class PaymentsController extends Controller
+class CompaniesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        $Payment = new Payment();
-        $Payments = $Payment->getAll();
-        return $Payments;
+        $company = new company();
+        $company = $company->getAll();
+        return $company;
     }
 
     /**
@@ -32,13 +32,13 @@ class PaymentsController extends Controller
         $data = $request->all();
         
         $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
-            'client_id' => 'required|string'
+            'bank_account' => 'required|string',
+            'commercial' => 'required|string',
+            'email' => 'required|string',
+            'password' => 'required|string',
+            'personal_ID' => 'required|numeric',
+            'tax_card' => 'required|string',
+            // 'client_id' => 'required|string'
         ]);
 
         if($validator->fails()){
@@ -49,33 +49,33 @@ class PaymentsController extends Controller
             ], 400);
         }
         else{
-            $Payment = new Payment();
-            $createPayment = $Payment->create($data);
+            $company = new company();
+            $createcompany = $company->create($data);
         }
-        if ($createPayment)
-            return response()->json(['success' => true, 'data' => $createPayment], 200);
+        if ($createcompany)
+            return response()->json(['success' => true, 'data' => $createcompany], 200);
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * Display the Payment resource.
+     * Display the company resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $Payment = new Payment();
-        $Payment = $Payment->find($id);
-        if ($Payment)
-            return $Payment;
+        $company = new company();
+        $company = $company->find($id);
+        if ($company)
+            return $company;
         else
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'company not found'], 404);
     }
 
     /**
-     * Update the Payment resource in storage.
+     * Update the company resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -85,13 +85,12 @@ class PaymentsController extends Controller
     {
         $data = $request->all();
         $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
-            'client_id' => 'required|string'
+            'bank_account' => 'required|string',
+            'commercial' => 'required|string',
+            'email' => 'required|string',
+            'password' => 'required|string',
+            'personal_ID' => 'required|numeric',
+            'tax_card' => 'required|string',
         ]);
 
         if($validator->fails()){
@@ -102,29 +101,30 @@ class PaymentsController extends Controller
             ], 400);
         }
         else{
-            $Payment = new Payment();
-            $updatePayment = $Payment->edit($id, $data);
+            $company = new company();
+            $updatecompany = $company->edit($id, $data);
         }
 
-        if ($updatePayment)
-            return $updatePayment;
+        if ($updatecompany)
+            return $updatecompany;
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * get all payments of Payment
+     * get all companys of company
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function payments($id)
+    public function companys($id)
     {
-        $Payment = new Payment();
-        $payments = $Payment->payments($id);
-        if ($payments)
-            return $payments;
+        $company = new company();
+        $companys = $company->companys($id);
+        if ($companys)
+            return $companys;
         else
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'company not found'], 404);
 }
 }
+

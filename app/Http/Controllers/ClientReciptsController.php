@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Service;
+use App\Models\ClientRecipts;
 use Illuminate\Support\Facades\Validator;
 
-class ServiceController extends Controller
+class ClientReciptsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,15 +15,13 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $Service = new Service();
-        $Services = $Service->getAll();
-        return $Services;
+        $ClientRecipts = new ClientRecipts();
+        $ClientRecipts = $ClientRecipts->getAll();
+        return $ClientRecipts;
     }
 
     /**
      * Store a newly created resource in storage.
-     * 3del ya heshaaaaaam b3d el data
-     * 7eta security
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -32,8 +30,10 @@ class ServiceController extends Controller
         $data = $request->all();
         
         $validator =  Validator::make($request->all(),[
-            'name' => 'required|string|max:255',
-            'image' => 'required|string'
+            'client_id' => 'required|string|max:255',
+            'date' => 'required|string|max:25',
+            'payment_id' => 'required|string',
+            'price' => 'required|string'
         ]);
 
         if($validator->fails()){
@@ -44,33 +44,33 @@ class ServiceController extends Controller
             ], 400);
         }
         else{
-            $Service = new Service();
-            $createService = $Service->create($data);
+            $ClientRecipts = new ClientRecipts();
+            $createClientRecipts = $ClientRecipts->create($data);
         }
-        if ($createService)
-            return response()->json(['success' => true, 'data' => $createService], 200);
+        if ($createClientRecipts)
+            return response()->json(['success' => true, 'data' => $createClientRecipts], 200);
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * Display the Service resource.
+     * Display the ClientRecipts resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $Service = new Service();
-        $Service = $Service->find($id);
-        if ($Service)
-            return $Service;
+        $ClientRecipts = new ClientRecipts();
+        $ClientRecipts = $ClientRecipts->find($id);
+        if ($ClientRecipts)
+            return $ClientRecipts;
         else
-            return response()->json(['error' => 'Service not found'], 404);
+            return response()->json(['error' => 'ClientRecipts not found'], 404);
     }
 
     /**
-     * Update the Service resource in storage.
+     * Update the ClientRecipts resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -80,31 +80,32 @@ class ServiceController extends Controller
     {
         $data = $request->all();
         $request->validate([
-            'name' => 'required|string|max:255',
-            'image' => 'required|string|mimes:jpeg,png,jpg'
+            'client_id' => 'required|string|max:255',
+            'date' => 'required|string|max:25',
+            'payment_id' => 'required|string',
+            'price' => 'required|string'
         ]);
-        $Service = new Service();
-        $updateService = $Service->edit($id, $data);
-        if ($updateService)
-            return $updateService;
+        $ClientRecipts = new ClientRecipts();
+        $updateClientRecipts = $ClientRecipts->edit($id, $data);
+        if ($updateClientRecipts)
+            return $updateClientRecipts;
         else
             return response()->json(['error' => 'Something went wrong'], 500);
     }
 
     /**
-     * get all payments of Service
+     * get all payments of ClientRecipts
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function payments($id)
     {
-        $Service = new Service();
-        $payments = $Service->payments($id);
+        $ClientRecipts = new ClientRecipts();
+        $payments = $ClientRecipts->payments($id);
         if ($payments)
             return $payments;
         else
-            return response()->json(['error' => 'Service not found'], 404);
+            return response()->json(['error' => 'ClientRecipts not found'], 404);
     }
 }
-
