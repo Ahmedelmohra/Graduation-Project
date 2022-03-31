@@ -18,6 +18,7 @@ class ClientsController extends Controller
         $client = new client();
         $clients = $client->getAll();
         return $clients;
+        // return view('welcome');
     }
 
     /**
@@ -30,6 +31,8 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+
+        $data['password'];
         
         $validator =  Validator::make($request->all(),[
             'name' => 'required|string|max:255',
@@ -108,6 +111,24 @@ class ClientsController extends Controller
         $payments = $client->payments($id);
         if ($payments)
             return $payments;
+        else
+            return response()->json(['error' => 'client not found'], 404);
+    }
+    public function recipts($id)
+    {
+        $client = new client();
+        $recipts = $client->recipts($id);
+        if ($recipts)
+            return $recipts;
+        else
+            return response()->json(['error' => 'client not found'], 404);
+    }
+    public function wallet($id)
+    {
+        $client = new client();
+        $wallet = $client->wallet($id);
+        if ($wallet)
+            return $wallet;
         else
             return response()->json(['error' => 'client not found'], 404);
     }

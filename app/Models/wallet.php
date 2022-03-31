@@ -16,27 +16,27 @@ class wallet extends Model
     public function __construct()
     {
         $this->firstore = new FirestoreClient();
-        $this->collection = $this->firstore->collection('wallet');
+        $this->collection = $this->firstore->collection('wallets');
         $this->documents = $this->collection->documents()->rows();
     }
 
     /**
-     * get all payment
+     * get all wallets
      * 
-     * @return array of payment`
+     * @return array of wallets`
      */
     public function getAll()
     {
         $documents =  $this->documents;
-        $payment = [];
+        $wallets = [];
         foreach ($documents as $document) {
             $id = $document->id();
-            $payment[] = [
+            $wallets[] = [
                 'id' => $id,
                 'data' => $document->data()
             ];
         }
-        return $payment;
+        return $wallets;
     }
 
     /**
@@ -49,7 +49,7 @@ class wallet extends Model
         $document = $this->collection->document($id)->snapshot();
         if ($document->exists()) {
             $client = [
-                'client_id' => $document->id(),
+                'id' => $document->id(),
                 'data' => $document->data()
             ];
             return $client;

@@ -21,7 +21,7 @@ class client extends Model
     public function __construct()
     {
         $this->firstore = new Firestoreclient();
-        $this->collection = $this->firstore->collection('client');
+        $this->collection = $this->firstore->collection('clients');
         $this->documents = $this->collection->documents()->rows();
     }
 
@@ -105,5 +105,35 @@ class client extends Model
         }
         return $payments;
     }
+
+
+    public function recipts($id)
+    {
+        $collection = $this->firstore->collection('recipts');
+        $documents = $collection->where('client_id', '==', $id)->documents()->rows();
+        $recipts = [];
+        foreach ($documents as $document) {
+            $recipts[] = [
+                'id' => $document->id(),
+                'data' => $document->data()
+            ];
+        }
+        return $recipts;
+    }
+    public function wallet($id)
+    {
+        $collection = $this->firstore->collection('wallets');
+        $documents = $collection->where('client_id', '==', $id)->documents()->rows();
+        $wallet = [];
+        foreach ($documents as $document) {
+            $wallet[] = [
+                'id' => $document->id(),
+                'data' => $document->data()
+            ];
+        }
+
+        return $wallet;
+    }
+
 
 }

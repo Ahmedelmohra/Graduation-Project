@@ -6,6 +6,7 @@ use Google\Cloud\Firestore\FirestoreClient;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\TestController;
 // use phpseclib\Crypt\Hash;
 // use Hash;
 use Illuminate\Support\Facades\Hash;
@@ -24,7 +25,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test' , function(){
+Route::get('/test' , [TestController::class , 'index'])->name('test.index');
+// Route::post('/test' , [TestController::class , 'store'])->name('test.store');
+
+Route::get('/test2' , function(){
     // $firestore = new FirestoreClient();
 
     // $data = $firestore->collection('Service')->documents();

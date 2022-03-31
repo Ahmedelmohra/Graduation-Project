@@ -114,15 +114,7 @@ class WalletController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function wallet($id)
-    {
-        $wallet = new wallet();
-        $wallet = $wallet->wallet($id);
-        if ($wallet)
-            return $wallet;
-        else
-            return response()->json(['error' => 'wallet not found'], 404);
-}
+    
 
 
 }
