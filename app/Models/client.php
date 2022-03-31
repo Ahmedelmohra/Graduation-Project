@@ -25,6 +25,13 @@ class client extends Model
         $this->documents = $this->collection->documents()->rows();
     }
 
+    public function __ezzz()
+    {
+        $this->firstore = new Firestoreclient();
+        $this->collection = $this->firstore->collection('clients');
+        $this->documents = $this->collection->documents()->rows();
+    }
+
     /**
      * get all clients
      * 
