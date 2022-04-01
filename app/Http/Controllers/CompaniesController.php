@@ -130,5 +130,14 @@ class CompaniesController extends Controller
         else
             return response()->json(['error' => 'company not found'], 404);
 }
+    public function recipts($id)
+    {
+        $client = new company();
+        $recipts = $company->recipts($id);
+        if ($recipts)
+            return $recipts;
+        else
+            return response()->json(['error' => 'company not found'], 404);
+}
 }
 

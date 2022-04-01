@@ -35,9 +35,9 @@ class ClientsController extends Controller
         $data['password'];
         
         $validator =  Validator::make($request->all(),[
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:25',
-            'password' => 'required|string',
+            'name' => 'required|string|max:20',
+            'phone' => 'required|numeric|max:11',
+            'password' => 'required|string|min:8',
             'salt' => 'required|string',
             'finger_print' => 'required|string'
         ]);
@@ -86,10 +86,12 @@ class ClientsController extends Controller
     {
         $data = $request->all();
         $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:25',
-            'password' => 'required|string',
-            'salt' => 'required|string'
+            'name' => 'required|string|max:20',
+            'phone' => 'required|string',
+            'password' => 'required|string|min:8',
+            'salt' => 'required|string',
+            'finger_print' => 'required|string'
+
         ]);
         $client = new client();
         $updateclient = $client->edit($id, $data);

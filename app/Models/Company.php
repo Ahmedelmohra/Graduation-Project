@@ -101,6 +101,19 @@ class Company extends Model
         }
         return $company;
     }
+    public function recipts($id)
+    {
+        $collection = $this->firstore->collection('recipts');
+        $documents = $collection->where('client_id', '==', $id)->documents()->rows();
+        $recipts = [];
+        foreach ($documents as $document) {
+            $recipts[] = [
+                'id' => $document->id(),
+                'data' => $document->data()
+            ];
+        }
+        return $recipts;
+    }
 
 }
 

@@ -53,10 +53,11 @@ Route::post('/recipts', [ReciptsController::class, 'store']);
 //COMPANY
 Route::get('/comp', [CompaniesController::class, 'index']);
 Route::get('/comp/{id}', [CompaniesController::class, 'show']);
-Route::post('/comp', [CompaniesController::class, 'store']); 
+Route::post('/comp', [CompaniesController::class, 'store']);
+Route::get('/comp/{id}/recipts', [CompaniesController::class, 'recipts']);
 
 
-//wallets
+//WALLET
 Route::get('/wallets', [walletController::class, 'index']);
 Route::get('/wallets/{id}', [walletController::class, 'show']);
 Route::post('/wallets', [walletController::class, 'store']); 
