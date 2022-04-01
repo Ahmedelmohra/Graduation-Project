@@ -34,6 +34,8 @@ class CompaniesController extends Controller
         $validator =  Validator::make($request->all(),[
             'bank_account' => 'required|string',
             'commercial' => 'required|string',
+            'image' => 'required|string',
+            'name' => 'required|string',
             'email' => 'required|string',
             'password' => 'required|string',
             'personal_ID' => 'required|numeric',
@@ -91,6 +93,8 @@ class CompaniesController extends Controller
             'password' => 'required|string',
             'personal_ID' => 'required|numeric',
             'tax_card' => 'required|string',
+            'image' => 'required|string',
+            'name' => 'required|string',
         ]);
 
         if($validator->fails()){

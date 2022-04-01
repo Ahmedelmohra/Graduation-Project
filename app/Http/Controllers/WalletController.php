@@ -34,7 +34,7 @@ class WalletController extends Controller
         $validator =  Validator::make($request->all(),[
             'balance' => 'required|numeric',
             'client_id' => 'required|string',
-            'wallet recharge_id' => 'required|string',
+            // 'wallet recharge_id' => 'required|string',
             // 'network' => 'required|string',
             // 'operation_num' => 'required|numeric',
             // 'service_id' => 'required|string',
@@ -87,8 +87,7 @@ class WalletController extends Controller
         $validator =  Validator::make($request->all(),[
             'balance' => 'required|numeric',
             'client_id' => 'required|string',
-            'wallet recharge_id' => 'required|string',
-        ]);
+                ]);
 
         if($validator->fails()){
             return response()->json([

@@ -35,10 +35,10 @@ class PaymentsController extends Controller
             'price' => 'required|numeric|max:10',
             'service_code' => 'required|string|max:10',
             'company_id' => 'required|numeric',
-            'network' => 'required|string',
+            // 'network' => 'required|string',
             'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
-            'client_id' => 'required|string'
+            // 'service_id' => 'required|string',
+            'client_id' => 'required|string',
         ]);
 
         if($validator->fails()){
@@ -88,9 +88,9 @@ class PaymentsController extends Controller
             'price' => 'required|numeric|max:10',
             'service_code' => 'required|string|max:10',
             'company_id' => 'required|numeric',
-            'network' => 'required|string',
+            // 'network' => 'required|string',
             'operation_num' => 'required|numeric',
-            'service_id' => 'required|string',
+            // 'service_id' => 'required|string',
             'client_id' => 'required|string'
         ]);
 

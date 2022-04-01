@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Google\Cloud\Firestore\FirestoreClient;
 
-class CompanyRecipts extends Model
+class recipts extends Model
 {
     use HasFactory;
+
     public $firstore;
     public $collection;
     public $documents;
@@ -16,7 +17,7 @@ class CompanyRecipts extends Model
     public function __construct()
     {
         $this->firstore = new FirestoreClient();
-        $this->collection = $this->firstore->collection('Company_recipts');
+        $this->collection = $this->firstore->collection('recipts');
         $this->documents = $this->collection->documents()->rows();
     }
 
@@ -87,20 +88,19 @@ class CompanyRecipts extends Model
      * @param  int $id
      * @return array of client
      */
-    public function CompanyRecipts($id)
+    public function recipts($id)
     {
-        $collection = $this->firstore->collection('CompanyRecipts');
+        $collection = $this->firstore->collection('recipts');
         $documents = $collection->where('client_id', '==', $id)->documents()->rows();
-        $CompanyRecipts = [];
+        $recipts = [];
         foreach ($documents as $document) {
-            $CompanyRecipts[] = [
+            $recipts[] = [
                 'id' => $document->id(),
                 'data' => $document->data()
             ];
         }
-        return $CompanyRecipts;
+        return $recipts;
     }
 
 }
-
 
