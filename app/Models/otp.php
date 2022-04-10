@@ -101,5 +101,30 @@ class otp extends Model
         }
         return $otp;
     }
+    /**
+     * delete otp
+     *
+     * @param  int $id
+     * @return array of otp
+     */
+    public function deleteOtp($id)
+    {
+        $document_id = $this->collection->where('user_id', '==', $id)->documents()->rows()[0]->id();
+        $document = $this->collection->document($document_id);
+        $document->delete();
+    }
+ 
+    /**
+     * get otp by user id
+     *
+     * @param  int $id
+     * @return array of otp
+     */
+    public function userOtp($id)
+    {
+        $document = $this->collection->where('user_id', '==', $id)->documents()->rows()[0];
+        return $document->data()['otp'];
+    }
+
 
 }

@@ -62,6 +62,20 @@ class client extends Model
         return false;
     }
 
+   /* get user by phone
+     * 
+     * @param  int $id
+     * @return array of user
+     */
+    public function findByPhone($phone){
+        $collection = $this->collection->where('phone', '=', $phone);
+        $documents = $collection->documents();
+        if ($documents->rows() != null) {
+            $document = $documents->rows()[0];
+            return $document;
+        }
+    }
+
     /**
      * create client
      * 
@@ -70,7 +84,10 @@ class client extends Model
      */
     public function create(array $data){
         $document = $this->collection->add($data);
-        return $document->snapshot();
+        return [
+            'id' => $document->id(),
+            'data' => $document->snapshot()->data()
+        ];
     }
 
     /**

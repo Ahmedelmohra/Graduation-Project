@@ -11,6 +11,7 @@ use App\Http\Controllers\RechargeController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ReciptsController;
 
+use App\Http\Controllers\AuthController;
 
 
 /*
@@ -72,8 +73,9 @@ Route::post('/recharge', [RechargeController::class, 'store']);
 
 
 
-
-
+//AuthintcTION
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 
 
