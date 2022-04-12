@@ -44,7 +44,11 @@ Route::post('/payments', [PaymentsController::class, 'store']);
 //OTP
 Route::get('/otps', [OtpController::class, 'index']);
 Route::get('/otps/{id}', [OtpController::class, 'show']);
-Route::post('/otps', [OtpController::class, 'store']);  
+Route::post('/otps', [OtpController::class, 'store']); 
+Route::post('/checkOtp', [OtpController::class, 'check']);
+Route::post('/destroyOtp', [OtpController::class, 'destroy']);
+
+
 
 //RECIPTS
 Route::get('/recipts', [ReciptsController::class, 'index']);
@@ -56,6 +60,8 @@ Route::get('/comp', [CompaniesController::class, 'index']);
 Route::get('/comp/{id}', [CompaniesController::class, 'show']);
 Route::post('/comp', [CompaniesController::class, 'store']);
 Route::get('/comp/{id}/recipts', [CompaniesController::class, 'recipts']);
+
+Route::get('/companies/{id}/payments', [CompaniesController::class, 'payments']); 
 
 
 //WALLET
