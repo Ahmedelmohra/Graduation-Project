@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class OtpController extends Controller
 {
-
-     /**
+    /**
      * check otp by user id
      * 
      * @param Request $request
@@ -18,13 +17,15 @@ class OtpController extends Controller
     public function check(Request $request)
     {
         $user_id = $request->user_id;
-        $otp_num  = $request->otp_num; 
+        // $otp_num  = hash('sha256' , $request->otp_num);
+        $otp_num  =  $request->otp_num;
 
         $otp = new Otp();
         $find_otp = $otp->userOtp($user_id);
 
         if($find_otp){
             if($find_otp == $otp_num){
+                $this->destroy($request);
                 return response()->json([
                     'status' => true,
                     'message' => 'OTP is valid'
@@ -51,24 +52,13 @@ class OtpController extends Controller
      */
     public function resend(Request $request)
     {
-        $data = $request->all();
-        $user_id = $data['user_id'];
+        $this->destroy($request);
+        $this->generateOtp($request);
+        return response()->json([
+            'status' => true,
+            'message' => 'OTP is resent successfully'
+        ]);
 
-        $otp = new Otp();
-        $find_otp = $otp->userOtp($user_id);
-
-        if($find_otp){
-            $this->generateOtp($user_id);
-            return response()->json([
-                'status' => true,
-                'message' => 'OTP is resend'
-            ]);
-        }else{
-            return response()->json([
-                'status' => false,
-                'message' => 'user not found'
-            ]);
-        }
     }
 
     /**
@@ -79,12 +69,25 @@ class OtpController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user_id = $request->input('user_id');
+        $user_id = $request->user_id;
         $otp = new Otp();
         $otp->deleteOtp($user_id);
-        return response()->json([
-            'status' => true,
-            'message' => 'OTP is deleted'
+    }
+
+    /**
+     * generate otp code
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generateOtp($request)
+    {
+        $random_otp = rand(1000, 9999);
+        $otp_hash = hash('sha256', $random_otp);
+
+        $otp = new Otp();
+        $otp->create([
+            'user_id' => $request->user_id,
+            'otp' => $otp_hash
         ]);
     }
 }
