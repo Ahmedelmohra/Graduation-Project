@@ -22,109 +22,90 @@ class PaymentsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * 3del ya heshaaaaaam b3d el data
-     * 7eta security
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $data = $request->all();
-        
-        $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            // 'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            // 'service_id' => 'required|string',
-            'client_id' => 'required|string',
+        $payment = new Payment;
+
+        $validator = Validator::make($request->all(),[
+            'company_id' => 'required|string',
+            'user_id' => 'required|string',
+            'service_code' => 'required|numeric',
+            'price' => 'required|numeric',
+            'feeds' => 'required|numeric',
         ]);
 
         if($validator->fails()){
             return response()->json([
-                'status' => 'error',
-                'message' => 'validation faild',
+                'status' => false,
+                'message' => 'validation failed',
                 'data' => $validator->errors()
-            ], 400);
+            ]);
         }
         else{
-            $Payment = new Payment();
-            $createPayment = $Payment->create($data);
+            $payment = $payment->create($data);
+            $receipt = $this->createReceipt($payment , $request->feeds);
+            return response()->json([
+                'status' => true,
+                'message' => 'Payment created successfully',
+                'data' => [
+                    'id' => $payment->id(),
+                    'company_id' => $payment->data()['company_id'],
+                    'user_id' => $payment->data()['user_id'],
+                    'service_code' => $payment->data()['service_code'],
+                    'price' => $payment->data()['price'],
+                    'receipt' => [
+                        'id' => $receipt->id(),
+                        'payment_id' => $receipt->data()['payment_id'],
+                        'feeds' => $receipt->data()['feeds'],
+                        'total' => $receipt->data()['total'],
+                        'date' => $receipt->data()['date']->get()->format('Y-m-d H:i:s'),
+                    ]
+                ]
+            ]);
         }
-        if ($createPayment)
-            return response()->json(['success' => true, 'data' => $createPayment], 200);
-        else
-            return response()->json(['error' => 'Something went wrong'], 500);
+        
     }
 
     /**
-     * Display the Payment resource.
+     * Create receipt for payment.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function createReceipt($payment , $feeds)
+    {
+        $receipt = new Receipt();
+        $total = (int) $payment['price'] + (int) $feeds;
+        $now_date = new Timestamp(new \DateTime('now'));
+
+        $receipt = $receipt->create([
+            'payment_id' => $payment->id(),
+            'feeds' => $feeds,
+            'total' => $total,
+            'date' => $now_date
+        ]);
+
+        return $receipt;
+    }
+
+    /**
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $Payment = new Payment();
-        $Payment = $Payment->find($id);
-        if ($Payment)
-            return $Payment;
+        $payment = new Payment();
+        $payment = $payment->find($id);
+        if ($payment)
+            return $payment;
         else
-            return response()->json(['error' => 'Payment not found'], 404);
+            return response()->json(['error' => 'Payment not found']);
     }
-
-    /**
-     * Update the Payment resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $data = $request->all();
-        $validator =  Validator::make($request->all(),[
-            'price' => 'required|numeric|max:10',
-            'service_code' => 'required|string|max:10',
-            'company_id' => 'required|numeric',
-            // 'network' => 'required|string',
-            'operation_num' => 'required|numeric',
-            // 'service_id' => 'required|string',
-            'client_id' => 'required|string'
-        ]);
-
-        if($validator->fails()){
-            return response()->json([
-                'status' => 'error',
-                'message' => 'validation faild',
-                'data' => $validator->errors()
-            ], 400);
-        }
-        else{
-            $Payment = new Payment();
-            $updatePayment = $Payment->edit($id, $data);
-        }
-
-        if ($updatePayment)
-            return $updatePayment;
-        else
-            return response()->json(['error' => 'Something went wrong'], 500);
-    }
-
-    /**
-     * get all payments of Payment
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function payments($id)
-    {
-        $Payment = new Payment();
-        $payments = $Payment->payments($id);
-        if ($payments)
-            return $payments;
-        else
-            return response()->json(['error' => 'Payment not found'], 404);
-}
 }

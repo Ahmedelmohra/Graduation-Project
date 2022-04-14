@@ -72,7 +72,7 @@ class ClientsController extends Controller
         if ($client)
             return $client;
         else
-            return response()->json(['error' => 'client not found'], 404);
+            return response()->json(['error' => 'client not found']);
     }
 
     /**
@@ -114,17 +114,9 @@ class ClientsController extends Controller
         if ($payments)
             return $payments;
         else
-            return response()->json(['error' => 'client not found'], 404);
+            return response()->json(['error' => 'client not found']);
     }
-    public function recipts($id)
-    {
-        $client = new client();
-        $recipts = $client->recipts($id);
-        if ($recipts)
-            return $recipts;
-        else
-            return response()->json(['error' => 'client not found'], 404);
-    }
+
     public function wallet($id)
     {
         $client = new client();
@@ -132,6 +124,6 @@ class ClientsController extends Controller
         if ($wallet)
             return $wallet;
         else
-            return response()->json(['error' => 'client not found'], 404);
+            return response()->json(['error' => 'client not found']);
     }
 }

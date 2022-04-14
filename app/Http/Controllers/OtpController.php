@@ -40,7 +40,7 @@ class OtpController extends Controller
                 $this->destroy($request);
                 return response()->json([
                     'status' => true,
-                    'message' => 'OTP is valid'
+                    'message' => 'OTP is valid and created wallet'
                 ]);
             }else{
                 return response()->json([
@@ -89,9 +89,10 @@ class OtpController extends Controller
     /**
      * generate otp code
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * 
      */
-    public function generateOtp($request)
+    public function generateOtp(Request $request)
     {
         $random_otp = rand(1000, 9999);
         // $otp_hash = hash('sha256', $random_otp);
@@ -102,4 +103,20 @@ class OtpController extends Controller
             'otp' => $random_otp
         ]);
     }
+
+    /**
+     * create wallet
+     *
+     * @param Request $request
+     * 
+     */
+    public function createWallet(Request $request)
+    {
+        $wallet = new wallet();
+        $wallet->create([
+            'user_id' => $request->user_id,
+            'balance' => 0
+        ]);
+    }
+
 }

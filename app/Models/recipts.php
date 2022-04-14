@@ -83,23 +83,19 @@ class recipts extends Model
     }
 
     /**
-     * delete client
+     * get one payment by receipt id
      * 
      * @param  int $id
-     * @return array of client
+     * @return array of payments
      */
-    public function recipts($id)
+    public function payment($id)
     {
-        $collection = $this->firstore->collection('recipts');
-        $documents = $collection->where('client_id', '==', $id)->documents()->rows();
-        $recipts = [];
-        foreach ($documents as $document) {
-            $recipts[] = [
-                'id' => $document->id(),
-                'data' => $document->data()
-            ];
+        $documents = $this->collection->where('payment_id', '=', $id)->documents();
+        if ($documents->rows() != null) {
+            $document = $documents->rows()[0];
+            return $document;
         }
-        return $recipts;
+        return false;
     }
 
 }

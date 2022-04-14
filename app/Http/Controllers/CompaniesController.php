@@ -20,45 +20,6 @@ class CompaniesController extends Controller
         return $company;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * 3del ya heshaaaaaam b3d el data
-     * 7eta security
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $data = $request->all();
-        
-        $validator =  Validator::make($request->all(),[
-            'bank_account' => 'required|string',
-            'commercial' => 'required|string',
-            'image' => 'required|string',
-            'name' => 'required|string',
-            'email' => 'required|string',
-            'password' => 'required|string',
-            'personal_ID' => 'required|numeric',
-            'tax_card' => 'required|string',
-            // 'client_id' => 'required|string'
-        ]);
-
-        if($validator->fails()){
-            return response()->json([
-                'status' => 'error',
-                'message' => 'validation faild',
-                'data' => $validator->errors()
-            ], 400);
-        }
-        else{
-            $company = new company();
-            $createcompany = $company->create($data);
-        }
-        if ($createcompany)
-            return response()->json(['success' => true, 'data' => $createcompany], 200);
-        else
-            return response()->json(['error' => 'Something went wrong'], 500);
-    }
 
     /**
      * Display the company resource.
@@ -77,67 +38,16 @@ class CompaniesController extends Controller
     }
 
     /**
-     * Update the company resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $data = $request->all();
-        $validator =  Validator::make($request->all(),[
-            'bank_account' => 'required|string',
-            'commercial' => 'required|string',
-            'email' => 'required|string',
-            'password' => 'required|string',
-            'personal_ID' => 'required|numeric',
-            'tax_card' => 'required|string',
-            'image' => 'required|string',
-            'name' => 'required|string',
-        ]);
-
-        if($validator->fails()){
-            return response()->json([
-                'status' => 'error',
-                'message' => 'validation faild',
-                'data' => $validator->errors()
-            ], 400);
-        }
-        else{
-            $company = new company();
-            $updatecompany = $company->edit($id, $data);
-        }
-
-        if ($updatecompany)
-            return $updatecompany;
-        else
-            return response()->json(['error' => 'Something went wrong'], 500);
-    }
-
-    /**
-     * get all companys of company
+     * get all payments by company id.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function companys($id)
+    public function payments($id)
     {
         $company = new company();
-        $companys = $company->companys($id);
-        if ($companys)
-            return $companys;
-        else
-            return response()->json(['error' => 'company not found'], 404);
-}
-    public function recipts($id)
-    {
-        $client = new company();
-        $recipts = $company->recipts($id);
-        if ($recipts)
-            return $recipts;
-        else
-            return response()->json(['error' => 'company not found'], 404);
-}
+        $company = $company->payments($id);
+        return $company;
+    }
 }
 

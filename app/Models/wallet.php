@@ -40,7 +40,7 @@ class wallet extends Model
     }
 
     /**
-     * get client by id
+     * get wallet by id
      * 
      * @param  int $id
      * @return array of client
@@ -55,6 +55,21 @@ class wallet extends Model
             return $client;
         }
         return false;
+    }
+
+    /**
+     * get wallet by user id
+     * 
+     * @param  int $id
+     * @return array of client
+     */
+    public function findByUserId($id){
+        $collection = $this->collection->where('client_id', '=', $id);
+        $documents = $collection->documents();
+        if ($documents->rows() != null) {
+            $document = $documents->rows()[0];
+            return $document;
+        }
     }
 
     /**
