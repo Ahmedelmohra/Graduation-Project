@@ -46,7 +46,7 @@ Route::get('/otps', [OtpController::class, 'index']);
 Route::get('/otps/{id}', [OtpController::class, 'show']);
 Route::post('/otps', [OtpController::class, 'store']); 
 Route::post('/checkOtp', [OtpController::class, 'check']);
-Route::post('/destroyOtp', [OtpController::class, 'destroy']);
+Route::post('/resend', [OtpController::class, 'resend']);
 
 
 

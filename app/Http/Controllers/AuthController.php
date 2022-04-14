@@ -220,12 +220,12 @@ class AuthController extends Controller
     public function generateOtp($client)
     {
         $random_otp = rand(1000, 9999);
-        $otp_hash = hash('sha256', $random_otp);
+        // $otp_hash = hash('sha256', $random_otp);
 
         $otp = new Otp();
         $otp->create([
             'client_id' => $client['id'],
-            'otp' => $otp_hash
+            'otp' => $random_otp
         ]);
     }
 
