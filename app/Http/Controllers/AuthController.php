@@ -37,6 +37,22 @@ class AuthController extends Controller
                     'message' => 'Phone number already exist'
                 ]);
             }else{
+                $password = $request->password;
+                $salt = $request->salt;
+                $password = str_replace($salt, '', $password);
+
+                ini_set('memory_limit', '2048M');
+                $file = file_get_contents(storage_path('app/hash.txt'));
+                $file = explode("\n", $file);
+                foreach ($file as $line) {
+                    if($line == $password){
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Password is not secure'
+                        ]);
+                    }
+                }
+                
                 $client = $clients->create([
                     'name' => $request->name,
                     'phone' => $request->phone,
