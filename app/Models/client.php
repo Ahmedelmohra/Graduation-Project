@@ -104,25 +104,7 @@ class client extends Model
         return $document->snapshot();
     }
 
-    /**
-     * delete client
-     * 
-     * @param  int $id
-     * @return array of client
-     */
-    public function payments($id)
-    {
-        $collection = $this->firstore->collection('payments');
-        $documents = $collection->where('client_id', '==', $id)->documents()->rows();
-        $payments = [];
-        foreach ($documents as $document) {
-            $payments[] = [
-                'id' => $document->id(),
-                'data' => $document->data()
-            ];
-        }
-        return $payments;
-    }
+  
 
 
     /**

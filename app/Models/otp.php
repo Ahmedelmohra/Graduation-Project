@@ -109,7 +109,7 @@ class otp extends Model
      */
     public function deleteOtp($id)
     {
-        $document_id = $this->collection->where('user_id', '==', $id)->documents()->rows()[0]->id();
+        $document_id = $this->collection->where('client_id', '==', $id)->documents()->rows()[0]->id();
         $document = $this->collection->document($document_id);
         $document->delete();
     }
@@ -122,7 +122,7 @@ class otp extends Model
      */
     public function userOtp($id)
     {
-        $document = $this->collection->where('user_id', '==', $id)->documents()->rows()[0];
+        $document = $this->collection->where('client_id', '==', $id)->documents()->rows()[0];
         return $document->data()['otp'];
     }
 

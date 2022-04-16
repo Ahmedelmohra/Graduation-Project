@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\otp;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\wallet;
 class OtpController extends Controller
 {
     /**
@@ -28,15 +28,17 @@ class OtpController extends Controller
      */
     public function check(Request $request)
     {
-        $user_id = $request->user_id;
+        $client_id = $request->client_id;
         // $otp_num  = hash('sha256' , $request->otp_num);
         $otp_num  =  $request->otp_num;
 
         $otp = new otp();
-        $find_otp = $otp->userOtp($user_id);
+        $find_otp = $otp->userOtp($client_id);
 
         if($find_otp){
-            if($find_otp == $otp_num){
+            if((int)$find_otp === (int)$otp_num){
+               
+                $this->createWallet($request);
                 $this->destroy($request);
                 return response()->json([
                     'status' => true,
@@ -81,9 +83,9 @@ class OtpController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user_id = $request->user_id;
+        $client_id = $request->client_id;
         $otp = new otp();
-        $otp->deleteOtp($user_id);
+        $otp->deleteOtp($client_id);
     }
 
     /**
@@ -99,7 +101,7 @@ class OtpController extends Controller
 
         $otp = new otp();
         $otp->create([
-            'user_id' => $request->user_id,
+            'client_id' => $request->client_id,
             'otp' => $random_otp
         ]);
     }
@@ -114,7 +116,7 @@ class OtpController extends Controller
     {
         $wallet = new wallet();
         $wallet->create([
-            'user_id' => $request->user_id,
+            'client_id' => $request->client_id,
             'balance' => 0
         ]);
     }
