@@ -140,6 +140,13 @@ class client extends Model
         return $payments;
     }
 
+    /**
+     * get wallet by client id
+     * 
+     * @param  int $id
+     * @return array of wallet
+     * 
+     */
     public function wallet($id)
     {
         $collection = $this->firstore->collection('wallets');
@@ -150,6 +157,22 @@ class client extends Model
         }
 
         return false;
+    }
+
+    /**
+     * delete all users
+     * 
+     * @return bool
+     */
+    public function deleteAll()
+    {
+        $documents = $this->collection->documents();
+        foreach ($documents as $document) {
+            $item = $this->collection->document($document->id());
+            $item->delete();
+        }
+
+        return true;
     }
 
 

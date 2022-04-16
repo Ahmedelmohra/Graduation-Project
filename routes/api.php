@@ -31,6 +31,7 @@ Route::get('/clients', [ClientsController::class, 'index']);
 Route::get('/clients/{id}', [ClientsController::class, 'show']);
 Route::post('/clients', [ClientsController::class, 'store']);
 Route::post('/clients/{id}', [ClientsController::class, 'update']);
+Route::get('/destroy_clients', [ClientsController::class, 'destroy']);
 Route::get('/clients/{id}/payments', [ClientsController::class, 'payments']);
 Route::get('/clients/{id}/wallet', [ClientsController::class, 'wallet']);
 

@@ -126,4 +126,19 @@ class ClientsController extends Controller
         else
             return response()->json(['error' => 'client not found']);
     }
+
+    /**
+     * Remove all users from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy()
+    {
+        $user = new User();
+        $user->deleteAll();
+        return response()->json([
+            'status' => true,
+            'message' => 'All users deleted successfully'
+        ]);
+    }
 }
