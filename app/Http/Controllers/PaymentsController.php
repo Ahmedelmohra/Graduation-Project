@@ -32,8 +32,8 @@ class PaymentsController extends Controller
         $payment = new Payment;
 
         $validator = Validator::make($request->all(),[
-            'company_id' => 'required|string',
-            'user_id' => 'required|string',
+            'company_id' => 'nullable|string',
+            'client_id' => 'required|string',
             'service_code' => 'required|numeric',
             'price' => 'required|numeric',
             'feeds' => 'required|numeric',
@@ -55,7 +55,7 @@ class PaymentsController extends Controller
                 'data' => [
                     'id' => $payment->id(),
                     'company_id' => $payment->data()['company_id'],
-                    'user_id' => $payment->data()['user_id'],
+                    'client_id' => $payment->data()['client_id'],
                     'service_code' => $payment->data()['service_code'],
                     'price' => $payment->data()['price'],
                     'receipt' => [
