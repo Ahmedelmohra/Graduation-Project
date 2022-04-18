@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
+use App\Models\recipts;
+use Google\Cloud\Core\Timestamp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -54,7 +56,7 @@ class PaymentsController extends Controller
                 'message' => 'Payment created successfully',
                 'data' => [
                     'id' => $payment->id(),
-                    'company_id' => $payment->data()['company_id'],
+                    // 'company_id' => $payment->data()['company_id'],
                     'client_id' => $payment->data()['client_id'],
                     'service_code' => $payment->data()['service_code'],
                     'price' => $payment->data()['price'],
@@ -79,7 +81,7 @@ class PaymentsController extends Controller
      */
     public function createReceipt($payment , $feeds)
     {
-        $receipt = new Receipt();
+        $receipt = new recipts();
         $total = (int) $payment['price'] + (int) $feeds;
         $now_date = new Timestamp(new \DateTime('now'));
 
