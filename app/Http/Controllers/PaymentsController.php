@@ -58,7 +58,7 @@ class PaymentsController extends Controller
                 'message' => 'Payment created successfully',
                 'data' => [
                     'id' => $payment->id(),
-                    'company_id' => $company,
+                    'company_name' => $company,
                     'client_id' => $payment->data()['client_id'],
                     'service_code' => $payment->data()['service_code'],
                     'price' => $payment->data()['price'],
