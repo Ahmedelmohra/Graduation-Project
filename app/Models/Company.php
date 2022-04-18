@@ -50,7 +50,7 @@ class Company extends Model
         $document = $this->collection->document($id)->snapshot();
         if ($document->exists()) {
             $client = [
-                'client_id' => $document->id(),
+                'id' => $document->id(),
                 'data' => $document->data()
             ];
             return $client;

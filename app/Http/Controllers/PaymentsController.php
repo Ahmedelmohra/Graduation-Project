@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Payment;
 use App\Models\recipts;
 use Google\Cloud\Core\Timestamp;
@@ -51,12 +52,13 @@ class PaymentsController extends Controller
         else{
             $payment = $payment->create($data);
             $receipt = $this->createReceipt($payment , $request->feeds);
+            $company = $this->getCompany($payment->data()['company_id']);
             return response()->json([
                 'status' => true,
                 'message' => 'Payment created successfully',
                 'data' => [
                     'id' => $payment->id(),
-                    // 'company_id' => $payment->data()['company_id'],
+                    'company_id' => $company,
                     'client_id' => $payment->data()['client_id'],
                     'service_code' => $payment->data()['service_code'],
                     'price' => $payment->data()['price'],
@@ -109,5 +111,18 @@ class PaymentsController extends Controller
             return $payment;
         else
             return response()->json(['error' => 'Payment not found']);
+    }
+
+    /**
+     * get caompany by id
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getCompany($id)
+    {
+        $company = new Company();
+        $company = $company->find($id);
+        return $company->data()['name'];
     }
 }
