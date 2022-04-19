@@ -23,7 +23,7 @@ class AuthController extends Controller
         $validator = $this->validateRegisterData($request);
         if ($validator->fails()) {
             return response()->json([
-                'status' => 'error',
+                'status' => false,
                 'message' => 'validation failed',
                 'data' => $validator->errors()
             ], );
@@ -193,12 +193,13 @@ class AuthController extends Controller
         } elseif ($request->typeOfUser == 'company') {
             $validator =  Validator::make($request->all(), [
                 'name' => 'required|string',
+                // 'phone' => 'required|string',
                 'email' => 'required|email',
-                'password' => 'required|string',
-                'bank_account' => 'required|numeric',
-                'commercial' => 'required|numeric',
-                'tax_number' => 'required|numeric',
-                'personal_id' => 'required|numeric',
+                // 'password' => 'required|string',
+                'bank_account' => 'required|string',
+                'commercial' => 'required|string',
+                'tax_number' => 'required|string',
+                'personal_id' => 'required|string',
             ]);
         }
         

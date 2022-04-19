@@ -52,21 +52,21 @@ class PaymentsController extends Controller
         else{
             $payment = $payment->create($data);
             $receipt = $this->createReceipt($payment , $request->feeds);
-            $company = $this->getCompany($payment->data()['company_id']);
+            // $company = $this->getCompany($payment->data()['company_id']);
             return response()->json([
                 'status' => true,
                 'message' => 'Payment created successfully',
                 'data' => [
                     'id' => $payment->id(),
-                    'company_name' => $company,
+                    // 'company_name' => $company,
                     'client_id' => $payment->data()['client_id'],
                     'service_code' => (int) $payment->data()['service_code'],
-                    'price' => number_format($payment->data()['price'], 2),
+                    'price' => $payment->data()['price'],
                     'receipt' => [
                         'id' => $receipt->id(),
                         'payment_id' => $receipt->data()['payment_id'],
-                        'feeds' => number_format($receipt->data()['feeds'], 2),
-                        'total' => number_format($receipt->data()['total'] , 2),
+                        'feeds' => $receipt->data()['feeds'],
+                        'total' => $receipt->data()['total'],
                         'date' => $receipt->data()['date']->get()->format('Y-m-d H:i:s'),
                     ]
                 ]
@@ -90,7 +90,8 @@ class PaymentsController extends Controller
         $receipt = $receipt->create([
             'payment_id' => $payment->id(),
             'feeds' => $feeds,
-            'total' => $total,
+            'total' => number_format($total, 2),
+            
             'date' => $now_date
         ]);
 
