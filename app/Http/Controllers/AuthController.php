@@ -84,13 +84,13 @@ class AuthController extends Controller
                     'status' => true,
                     'message' => 'Company registered successfully',
                     'data' => [
-                        'id' => $company['id'],
-                        'name' => $company['data']['name'],
-                        'email' => $company['data']['email'],
-                        'bank_account' => $company['data']['bank_account'],
-                        'commercial' => $company['data']['commercial'],
-                        'tax_number' => $company['data']['tax_number'],
-                        'personal_id' => $company['data']['personal_id'],
+                        'id' => $company->id(),
+                        'name' => $company->data()['name'],
+                        'email' => $company->data()['email'],
+                        'bank_account' => $company->data()['bank_account'],
+                        'commercial' => $company->data()['commercial'],
+                        'tax_number' => $company->data()['tax_number'],
+                        'personal_id' => $company->data()['personal_id'],
                     ]
                 ]);
             }
