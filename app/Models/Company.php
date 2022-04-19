@@ -59,6 +59,22 @@ class Company extends Model
     }
 
     /**
+     * get user by email
+     * 
+     * @param  int $id
+     * @return array of company
+     */
+    public function findByEmail($email)
+    {
+        $collection = $this->collection->where('email', '=', $email);
+        $documents = $collection->documents();
+        if ($documents->rows() != null) {
+            $document = $documents->rows()[0];
+            return $document;
+        }
+    }
+
+    /**
      * create client
      * 
      * @param  array $data
