@@ -124,14 +124,14 @@ class client extends Model
             $get_receipt = $receipt->payment($id);
             $payments[] = [
                 'id' => $document->id(),
-                'user_id' => $document->data()['user_id'],
-                'company_id' => $document->data()['company_id'],
-                'service_code' => $document->data()['service_code'],
-                'price' => $document->data()['price'],
+                // 'user_id' => $document->data()['user_id'],
+                // 'company_id' => $document->data()['company_id'],
+                // 'service_code' => $document->data()['service_code'],
+                // 'price' => $document->data()['price'],
                 'receipt' => [
                     'id' => $get_receipt->id(),
-                    'payment_id' => $get_receipt->data()['payment_id'],
-                    'feeds' => $get_receipt->data()['feeds'],
+                    // 'payment_id' => $get_receipt->data()['payment_id'],
+                    // 'feeds' => $get_receipt->data()['feeds'],
                     'total' => $get_receipt->data()['total'],
                     'date' => $get_receipt->data()['date']->get()->format('Y-m-d H:i:s'),
                 ]

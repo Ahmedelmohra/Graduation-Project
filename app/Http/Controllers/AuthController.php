@@ -78,7 +78,17 @@ class AuthController extends Controller
                     'message' => 'Email Address already exist'
                 ]);
             }else{
-                $company = $companies->create($data);
+                $password = $this->generatePasswordForCompany();
+                $company = $companies->create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'service' => $request->service,
+                    'password' => hash('sh265' , $password),
+                    'bank_account' => $request->bank_account,
+                    'commercial' => $request->commercial,
+                    'tax_number' => $request->tax_number,
+                    'personal_id' => $request->personal_id,
+                ]);
                 // $this->generateOtp($company);
                 return response()->json([
                     'status' => true,
@@ -86,6 +96,7 @@ class AuthController extends Controller
                     'data' => [
                         'id' => $company->id(),
                         'name' => $company->data()['name'],
+                        'service' => $company->data()['service'],
                         'email' => $company->data()['email'],
                         'bank_account' => $company->data()['bank_account'],
                         'commercial' => $company->data()['commercial'],
@@ -193,7 +204,7 @@ class AuthController extends Controller
         } elseif ($request->typeOfUser == 'company') {
             $validator =  Validator::make($request->all(), [
                 'name' => 'required|string',
-                // 'phone' => 'required|string',
+                'service' => 'required|string',
                 'email' => 'required|email',
                 // 'password' => 'required|string',
                 'bank_account' => 'required|string',
@@ -244,6 +255,44 @@ class AuthController extends Controller
             'client_id' => $client['id'],
             'otp' => $random_otp
         ]);
+    }
+
+    /**
+     * generate password for company
+     * 
+     * @return string 
+     */
+    public function generatePasswordForCompany()
+    {
+        $char = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@$%&_';
+        $password = array();
+        $char_length = strlen($char) - 1;
+
+        for ($i = 0; $i < 16; $i++) {
+            $rand = rand(0, $char_length);
+            $password[] = $char[$rand];
+        }
+        return implode($password);
+    }
+
+
+    /**
+     * reset password for client
+     * 
+     * @param $id
+     * @return \Illuminate\Http\Response
+     * 
+     * 1- phone
+     * 2- otp -> password - confirm                                                      
+     */
+    public function resetPassword($id)
+    {
+        $client = new client();
+        $find_client = $client->find($id);
+
+        if($find_client){
+
+        }
     }
 
 }

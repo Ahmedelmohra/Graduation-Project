@@ -75,6 +75,19 @@ class Company extends Model
     }
 
     /**
+     * get company by service
+     * 
+     * @param $service
+     * @return array
+     */
+    public function findByService($service)
+    {
+        $collection = $this->collection->where('service', '=', $service);
+        $documents = $collection->documents()->rows();
+        return $documents;
+    }
+
+    /**
      * create client
      * 
      * @param  array $data

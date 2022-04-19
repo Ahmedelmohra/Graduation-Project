@@ -49,5 +49,18 @@ class CompaniesController extends Controller
         $company = $company->payments($id);
         return $company;
     }
+
+    /**
+     * get company by service
+     * 
+     * @param $service
+     * @return array
+     */
+    public function findByService($service)
+    {
+        $company = new Company();
+        $companies = $company->findByService($service);
+        return $companies;
+    }
 }
 
