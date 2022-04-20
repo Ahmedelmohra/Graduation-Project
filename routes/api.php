@@ -78,6 +78,8 @@ Route::post('/recharge', [RechargeController::class, 'store']);
 //AuthintcTION
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/check_user', [AuthController::class, 'checkUserAndSendOtp']);
+Route::post('/reset_password', [AuthController::class, 'checkOtpAndUpdatePassword']);
 
 
 

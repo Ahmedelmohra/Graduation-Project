@@ -81,4 +81,6 @@ class WalletController extends Controller
             return response()->json(['error' => 'Phone number is incorrect']);
         }
     }
+
+    
 }

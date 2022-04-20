@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Models\otp;
 use App\Models\client;
 use App\Models\Company;
-use App\Models\otp;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
+
 class AuthController extends Controller
 {
      /**
@@ -277,7 +278,7 @@ class AuthController extends Controller
 
 
     /**
-     * reset password for client
+     * check user and send otp
      * 
      * @param $id
      * @return \Illuminate\Http\Response
@@ -285,14 +286,104 @@ class AuthController extends Controller
      * 1- phone
      * 2- otp -> password - confirm                                                      
      */
-    public function resetPassword($id)
+    public function checkUserAndSendOtp(Request $request)
     {
+        $validator =  Validator::make($request->all(), [
+            'id' => 'required|string',
+            'phone' => 'required|string|max:11',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation failed',
+                'data' => $validator->errors()
+            ]);
+        }
+
         $client = new client();
-        $find_client = $client->find($id);
+        $find_client = $client->find($request->id);
 
         if($find_client){
-
+            $client_data = $find_client->data();
+            if($client_data['phone'] == $request->phone){
+                $this->generateOtp($client_data);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'otp sent',
+                ]);
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'phone number is incorrect',
+                ]);
+            }
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'client not found'
+            ]);
         }
     }
+
+    /**
+     * check otp and update password
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     *                                                      
+     */
+    public function checkOtpAndUpdatePassword(Request $request)
+    {
+        $validator =  Validator::make($request->all(), [
+            'id' => 'required|string',
+            'otp' => 'required|string',
+            'password' => 'required|string|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation failed',
+                'data' => $validator->errors()
+            ]);
+        }
+
+        $otp = new Otp();
+        $find_otp = $otp->otp($request->id);
+
+        if($find_otp){
+            $otp_data = $find_otp['data'];
+            if($otp_data['otp'] == $request->otp){
+                $client = new client();
+                $find_client = $client->find($request->id);
+                if($find_client){
+                    $client_data = $find_client['data'];
+                    $client_data['password'] = $request->password;
+                    $client->edit($request->id, $client_data);
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'password updated',
+                    ]);
+                }else{
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'client not found'
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'otp is incorrect'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'otp not found'
+            ]);
+        }
+    }
+
 
 }

@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Google\Cloud\Firestore\Firestoreclient;
 use App\Models\recipts;
+use App\Models\Company;
 
 class client extends Model
 {
@@ -121,20 +122,24 @@ class client extends Model
         foreach ($documents as $document) {
             $id = $document->id();
             $receipt = new recipts();
+            $company = new Company();
+            $company_name = $company->find($document->data()['company_id']);
             $get_receipt = $receipt->payment($id);
             $payments[] = [
                 'id' => $document->id(),
+                'company_name' => $company_name['data']['name'],
+                'total' => $get_receipt->data()['total'],
+                'date' => $get_receipt->data()['date']->get()->format('Y-m-d H:i:s'),
                 // 'user_id' => $document->data()['user_id'],
-                // 'company_id' => $document->data()['company_id'],
                 // 'service_code' => $document->data()['service_code'],
                 // 'price' => $document->data()['price'],
-                'receipt' => [
-                    'id' => $get_receipt->id(),
-                    // 'payment_id' => $get_receipt->data()['payment_id'],
-                    // 'feeds' => $get_receipt->data()['feeds'],
-                    'total' => $get_receipt->data()['total'],
-                    'date' => $get_receipt->data()['date']->get()->format('Y-m-d H:i:s'),
-                ]
+                // 'receipt' => [
+                //     'id' => $get_receipt->id(),
+                //     // 'payment_id' => $get_receipt->data()['payment_id'],
+                //     // 'feeds' => $get_receipt->data()['feeds'],
+                //     'total' => $get_receipt->data()['total'],
+                //     'date' => $get_receipt->data()['date']->get()->format('Y-m-d H:i:s'),
+                // ]
             ];
         }
         return $payments;

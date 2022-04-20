@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\recipts;
 use Illuminate\Database\Eloquent\Model;
 use Google\Cloud\Firestore\FirestoreClient;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends Model
 {
@@ -124,21 +125,24 @@ class Company extends Model
         $payments = [];
         foreach ($documents as $document) {
             $id = $document->id();
-            $receipt = new Receipt();
+            $receipt = new recipts();
+            $client = new Client();
+            $client_name = $client->find($document->data()['client_id']);
             $get_receipt = $receipt->payment($id);
+            $company = $this->find($document->data()['company_id']);
             $payments[] = [
                 'id' => $document->id(),
-                'user_id' => $document->data()['user_id'],
-                'company_id' => $document->data()['company_id'],
+                'client_name' => $client_name['data']['name'],
+                // 'company_id' => $company->data()['name'],
                 'service_code' => $document->data()['service_code'],
                 'price' => $document->data()['price'],
-                'receipt' => [
-                    'id' => $get_receipt->id(),
-                    'payment_id' => $get_receipt->data()['payment_id'],
-                    'feeds' => $get_receipt->data()['feeds'],
-                    'total' => $get_receipt->data()['total'],
-                    'date' => $get_receipt->data()['date']->get()->format('Y-m-d H:i:s'),
-                ]
+                // 'receipt' => [
+                //     'id' => $get_receipt->id(),
+                //     'payment_id' => $get_receipt->data()['payment_id'],
+                //     'feeds' => $get_receipt->data()['feeds'],
+                //     'total' => $get_receipt->data()['total'],
+                //     'date' => $get_receipt->data()['date']->get()->format('Y-m-d H:i:s'),
+                // ]
             ];
         }
         return $payments;

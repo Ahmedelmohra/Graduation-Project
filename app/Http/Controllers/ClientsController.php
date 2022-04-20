@@ -17,7 +17,7 @@ class ClientsController extends Controller
     {
         $client = new client();
         $clients = $client->getAll();
-        return $clients;
+        return response()->json($clients);
         // return view('welcome');
     }
 
