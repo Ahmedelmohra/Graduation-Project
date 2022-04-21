@@ -112,9 +112,12 @@ class ClientsController extends Controller
         $client = new client();
         $payments = $client->payments($request->id);
         if ($payments)
-            return $payments;
+            return response()->json([
+                'status' => true,
+                'data' => $payments
+            ]);
         else
-            return response()->json(['error' => 'client not found']);
+            return response()->json(['error' => 'client not have payments']);
     }
 
     public function wallet($id)
