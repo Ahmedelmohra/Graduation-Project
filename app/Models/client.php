@@ -117,23 +117,23 @@ class client extends Model
     public function payments($id)
     {
         $collection = $this->firstore->collection('payments');
-        $documents = $collection->where('client_id', '==', $id)->documents()->rows();
+        $documents = $collection->where('client_id', '=', $id)->documents()->rows();
         $payments = [];
         foreach ($documents as $document) {
             $id = $document->id();
             $receipt = new recipts();
             $company = new Company();
             $company_name = null;
-            if($document['data']['company_id'] != null){
-                $get_company = $company->find($document['data']['company_id']);
+            if($document->data()['company_id'] != null){
+                $get_company = $company->find($document->data()['company_id']);
                 $company_name = $get_company['data']['name'];
             }
             $get_receipt = $receipt->payment($id);
             $payments[] = [
                 'id' => $document->id(),
-                'company_name' => $company_name,
-                'total' => $get_receipt['data']['total'],
-                'date' => $get_receipt['data']['date']->get()->format('Y-m-d H:i:s'),
+                'company_name' => $company_name ?? null,
+                'total' => $get_receipt['data']['total'] ?? 0,
+                'date' => $get_receipt['data']['date'] ?? null,
                 // 'user_id' => $document->data()['user_id'],
                 // 'service_code' => $document->data()['service_code'],
                 // 'price' => $document->data()['price'],

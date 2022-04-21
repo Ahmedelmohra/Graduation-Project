@@ -107,10 +107,10 @@ class ClientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function payments($id)
+    public function payments(Request $request)
     {
         $client = new client();
-        $payments = $client->payments($id);
+        $payments = $client->payments($request->id);
         if ($payments)
             return $payments;
         else
@@ -134,7 +134,7 @@ class ClientsController extends Controller
      */
     public function destroy()
     {
-        $user = new User();
+        $user = new client();
         $user->deleteAll();
         return response()->json([
             'status' => true,
