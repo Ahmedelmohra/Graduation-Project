@@ -114,7 +114,9 @@ class ClientsController extends Controller
         if ($payments)
             return response()->json([
                 'status' => true,
-                'data' => $payments
+                'data' => [
+                    'payments' => $payments
+                ]
             ]);
         else
             return response()->json(['error' => 'client not have payments']);
