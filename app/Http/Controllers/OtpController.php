@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\otp;
-use Illuminate\Support\Facades\Validator;
+use App\Models\client;
 use App\Models\wallet;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 class OtpController extends Controller
 {
     /**
@@ -33,6 +35,7 @@ class OtpController extends Controller
         $otp_num  =  $request->otp_num;
 
         $otp = new otp();
+        $client = new client();
         $find_otp = $otp->userOtp($client_id);
 
         if($find_otp){
@@ -49,6 +52,7 @@ class OtpController extends Controller
                     'status' => false,
                     'message' => 'OTP is invalid'
                 ]);
+                $client->deleteClient($client_id);
             }
         }else{
             return response()->json([

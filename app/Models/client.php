@@ -169,6 +169,16 @@ class client extends Model
     }
 
     /**
+     * delete client
+     * 
+     * @param  int $id
+     */
+    public function deleteClient($id){
+        $document = $this->collection->document($id);
+        $document->delete();
+    }
+
+    /**
      * delete all users
      * 
      * @return bool
