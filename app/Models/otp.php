@@ -122,8 +122,8 @@ class otp extends Model
      */
     public function userOtp($id)
     {
-        $document = $this->collection->where('client_id', '==', $id)->documents()->rows()[0];
-        return $document->data()['otp'];
+        $document = $this->collection->where('client_id', '==', $id)->documents()->rows();
+        return $document;
     }
 
 

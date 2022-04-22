@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\otp;
 use App\Models\client;
 use App\Models\Company;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $data = $request->all();
+        // $data = $request->all();
         $clients = new client();
         $companies = new Company();
 
@@ -84,7 +84,7 @@ class AuthController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'service' => $request->service,
-                    'password' => hash('sh265' , $password),
+                    'password' => hash('sha256' , $password),
                     'bank_account' => $request->bank_account,
                     'commercial' => $request->commercial,
                     'tax_number' => $request->tax_number,
