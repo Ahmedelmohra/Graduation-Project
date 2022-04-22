@@ -60,7 +60,7 @@ Route::post('/recipts', [ReciptsController::class, 'store']);
 Route::get('/companies', [CompaniesController::class, 'index']);
 Route::get('/companies/{id}', [CompaniesController::class, 'show']);
 Route::get('/companies/{id}/payments', [CompaniesController::class, 'payments']);
-Route::get('/companies/{service}', [CompaniesController::class, 'findByService']);
+Route::get('/companies_service', [CompaniesController::class, 'findByService']);
 
 
 //WALLET

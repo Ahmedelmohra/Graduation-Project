@@ -56,11 +56,15 @@ class CompaniesController extends Controller
      * @param $service
      * @return array
      */
-    public function findByService($service)
+    public function findByService(Request $request)
     {
+        $service = $request->service;
         $company = new Company();
         $companies = $company->findByService($service);
-        return $companies;
+        return response()->json([
+            'id' => $companies->id(),
+            'name' => $companies->data()['name'],
+        ]);
     }
 }
 
