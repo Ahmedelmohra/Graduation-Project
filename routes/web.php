@@ -22,3 +22,5 @@ Route::get('/', function () {
 Route::post('/charge_wallet', [WalletController::class, 'update'])->name('charge_wallet');
 
 Route::get('/clients/payments', [ClientsController::class, 'payments']);
+
+Route::post('/login', [AuthController::class, 'login'])->name('login');

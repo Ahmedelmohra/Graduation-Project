@@ -37,7 +37,6 @@ class OtpController extends Controller
         $otp = new otp();
         $client = new client();
         $find_otp = $otp->userOtp($client_id);
-
         if($find_otp){
             if((int)$find_otp === (int)$otp_num){
                
