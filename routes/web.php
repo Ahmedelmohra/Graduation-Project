@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\CompaniesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,7 +21,8 @@ Route::get('/', function () {
 });
 
 Route::post('/charge_wallet', [WalletController::class, 'update'])->name('charge_wallet');
-
-Route::get('/clients/payments', [ClientsController::class, 'payments']);
-
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+// get route request
+Route::get('/clients/payments', [ClientsController::class, 'payments']);
+Route::get('/companies_service', [CompaniesController::class, 'findByService']);

@@ -24,7 +24,7 @@
         </style>
     </head>
     <body class="antialiased">
-        <!-- <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
+        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
@@ -130,9 +130,9 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
-        <div class="container">
+        {{-- <div class="container">
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
@@ -155,7 +155,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
