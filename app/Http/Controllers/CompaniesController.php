@@ -61,9 +61,15 @@ class CompaniesController extends Controller
         $service = $request->service;
         $company = new Company();
         $companies = $company->findByService($service);
+        $all_companies = [];
+        foreach ($companies as $company) {
+            $all_companies[] = [
+                'id' => $company->id(),
+                'name' => $company->data()['name'],
+            ];
+        }
         return response()->json([
-            'id' => $companies->id(),
-            'name' => $companies->data()['name'],
+            'companies' => $all_companies,
         ]);
     }
 }
