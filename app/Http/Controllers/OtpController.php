@@ -118,10 +118,69 @@ class OtpController extends Controller
      */
     public function createWallet(Request $request)
     {
+<<<<<<< Updated upstream
         $wallet = new wallet();
         $wallet->create([
             'client_id' => $request->client_id,
             'balance' => 0
+=======
+        $otp = new otp();
+        $otps = $otp->otps($id);
+        if ($otps)
+            return $otps;
+        else
+            return response()->json(['error' => 'otp not found'], 404);
+}
+ /**
+     * check otp by user id
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function check(Request $request)
+    {
+        $data = $request->all();
+        $user_id = $data['user_id'];
+        $otp_num  = $data['otp_num'];
+ 
+        $otp = new Otp();
+        $find_otp = $otp->userOtp($user_id);
+ 
+        if($find_otp){
+            if($find_otp == $otp_num){
+                return response()->json([
+                    'status' => true,
+                    'message' => 'OTP is valid'
+                ]);
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'OTP is invalid'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'user not found'
+            ]);
+        }
+    }
+ 
+    /**
+     * Destroy otp
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function destroy(Request $request)
+    {
+        $user_id = $request->input('user_id');
+        $otp = new Otp();
+        $otp->deleteOtp($user_id);
+        return response()->json([
+            'status' => true,
+            'message' => 'OTP is deleted'
+>>>>>>> Stashed changes
         ]);
     }
 

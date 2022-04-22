@@ -76,11 +76,20 @@ Route::get('/recharge/{id}', [RechargeController::class, 'show']);
 Route::post('/recharge', [RechargeController::class, 'store']); 
 
 
+<<<<<<< Updated upstream
 //AuthintcTION
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/check_user', [AuthController::class, 'checkUserAndSendOtp']);
 Route::post('/reset_password', [AuthController::class, 'checkOtpAndUpdatePassword']);
+=======
+
+
+
+//AuthintcTION
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+>>>>>>> Stashed changes
 
 
 
