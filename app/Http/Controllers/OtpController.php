@@ -118,12 +118,6 @@ class OtpController extends Controller
      */
     public function createWallet(Request $request)
     {
-<<<<<<< Updated upstream
-        $wallet = new wallet();
-        $wallet->create([
-            'client_id' => $request->client_id,
-            'balance' => 0
-=======
         $otp = new otp();
         $otps = $otp->otps($id);
         if ($otps)
@@ -180,7 +174,6 @@ class OtpController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'OTP is deleted'
->>>>>>> Stashed changes
         ]);
     }
 
