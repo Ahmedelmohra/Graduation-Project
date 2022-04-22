@@ -69,7 +69,10 @@ class CompaniesController extends Controller
             ];
         }
         return response()->json([
-            'companies' => $all_companies,
+            'status' => true,
+            'data' =>[
+                'companies' => $all_companies
+            ]
         ]);
     }
 }
