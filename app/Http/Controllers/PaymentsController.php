@@ -35,7 +35,7 @@ class PaymentsController extends Controller
         $payment = new Payment;
 
         $validator = Validator::make($request->all(),[
-            'company_id' => 'nullable|string',
+            'company_name' => 'nullable|string',
             'client_id' => 'required|string',
             'service_code' => 'required|numeric',
             'price' => 'required|numeric',
@@ -50,15 +50,21 @@ class PaymentsController extends Controller
             ]);
         }
         else{
-            $payment = $payment->create($data);
+            $company = $this->getCompany($request->company_name);
+            $payment = $payment->create([
+                'company_id' => $company->id(),
+                'client_id' => $request->client_id,
+                'service_code' => $request->service_code,
+                'price' => $request->price,
+                'feeds' => $request->feeds,
+            ]);
             $receipt = $this->createReceipt($payment , $request->feeds);
-            // $company = $this->getCompany($payment->data()['company_id']);
             return response()->json([
                 'status' => true,
                 'message' => 'Payment created successfully',
                 'data' => [
                     'id' => $payment->id(),
-                    // 'company_name' => $company,
+                    'company_name' => $company->data()['name'],
                     'client_id' => $payment->data()['client_id'],
                     'service_code' => (int) $payment->data()['service_code'],
                     'price' => $payment->data()['price'],
@@ -91,7 +97,6 @@ class PaymentsController extends Controller
             'payment_id' => $payment->id(),
             'feeds' => $feeds,
             'total' => number_format($total, 2),
-            
             'date' => $now_date
         ]);
 
@@ -120,10 +125,10 @@ class PaymentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getCompany($id)
+    public function getCompany($name)
     {
         $company = new Company();
-        $company = $company->find($id);
+        $company = $company->findByName($name);
         return $company->data()['name'];
     }
 }

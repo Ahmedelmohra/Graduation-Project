@@ -42,19 +42,36 @@ class Company extends Model
     }
 
     /**
+     * get company by id
+     * 
+     * @param  int $id
+     * @return array of company
+     */
+    public function find($id){
+        $document = $this->collection->document($id)->snapshot();
+        if ($document->exists()) {
+            $company = [
+                'id' => $document->id(),
+                'data' => $document->data()
+            ];
+            return $company;
+        }
+        return false;
+    }
+
+    /**
      * get client by id
      * 
      * @param  int $id
      * @return array of client
      */
-    public function find($id){
-        $document = $this->collection->document($id)->snapshot();
-        if ($document->exists()) {
-            $client = [
-                'id' => $document->id(),
-                'data' => $document->data()
-            ];
-            return $client;
+    public function findByName($name)
+    {
+        $collection = $this->collection->where('name' , '=' , $name);
+        $documents = $collection->documents();
+        if ($documents->rows() != null) {
+            $document = $documents->rows()[0];
+            return $document;
         }
         return false;
     }
@@ -126,7 +143,7 @@ class Company extends Model
         foreach ($documents as $document) {
             $id = $document->id();
             $receipt = new recipts();
-            $client = new Client();
+            $client = new client();
             $client_name = $client->find($document->data()['client_id']);
             $get_receipt = $receipt->payment($id);
             $company = $this->find($document->data()['company_id']);
