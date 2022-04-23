@@ -37,29 +37,33 @@ class OtpController extends Controller
         $otp = new otp();
         $client = new client();
         $find_otp = $otp->userOtp($client_id);
-        return $find_otp;
-        // if($find_otp){
-        //     if((int)$find_otp === (int)$otp_num){
+        // return response()->json([
+        //     'client_id' => $client_id,
+        //     'find_otp' => $find_otp->data()['otp'],
+        //     'otp' => $otp_num
+        // ]);
+        if($find_otp){
+            if($find_otp->data()['otp'] == (int) $otp_num){
                
-        //         $this->createWallet($request);
-        //         $this->destroy($request);
-        //         return response()->json([
-        //             'status' => true,
-        //             'message' => 'OTP is valid and created wallet'
-        //         ]);
-        //     }else{
-        //         return response()->json([
-        //             'status' => false,
-        //             'message' => 'OTP is invalid'
-        //         ]);
-        //         $client->deleteClient($client_id);
-        //     }
-        // }else{
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'user not found'
-        //     ]);
-        // }
+                $this->createWallet($request);
+                $this->destroy($request);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'OTP is valid and created wallet'
+                ]);
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'OTP is invalid'
+                ]);
+                $client->deleteClient($client_id);
+            }
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'user not found'
+            ]);
+        }
     }
 
     /**
