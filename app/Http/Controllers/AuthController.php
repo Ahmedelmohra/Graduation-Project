@@ -60,14 +60,14 @@ class AuthController extends Controller
                     'password' => $request->password,
                     'salt' => $request->salt,
                 ]);
-                $this->generateOtp($client);
+                $this->generateOtp($client['id']);
                 return response()->json([
                     'status' => true,
                     'message' => 'client registered successfully',
                     'data' => [
-                        'id' => $client->id(),
-                        'name' => $client->data()['name'],
-                        'phone' => $client->data()['phone'],
+                        'id' => $client['id'],
+                        'name' => $client['data']['name'],
+                        'phone' => $client['data']['phone'],
                     ]
                 ]);
             }
@@ -246,14 +246,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function generateOtp($client)
+    public function generateOtp($client_id)
     {
         $random_otp = rand(1000, 9999);
         // $otp_hash = hash('sha256', $random_otp);
 
         $otp = new Otp();
         $otp->create([
-            'client_id' => $client->id(),
+            'client_id' => $client_id,
             'otp' => $random_otp
         ]);
     }
@@ -305,7 +305,7 @@ class AuthController extends Controller
 
         if($find_client){
             $client_data = $find_client->data();
-                $this->generateOtp($client_data);
+                $this->generateOtp($find_client->id());
                 return response()->json([
                     'status' => true,
                     'message' => 'otp sent',
