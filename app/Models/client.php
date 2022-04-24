@@ -86,10 +86,7 @@ class client extends Model
      */
     public function create(array $data){
         $document = $this->collection->add($data);
-        return [
-            'id' => $document->id(),
-            'data' => $document->snapshot()->data()
-        ];
+        return $document;
     }
 
     /**

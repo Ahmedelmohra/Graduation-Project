@@ -65,9 +65,9 @@ class AuthController extends Controller
                     'status' => true,
                     'message' => 'client registered successfully',
                     'data' => [
-                        'id' => $client['id'],
-                        'name' => $client['data']['name'],
-                        'phone' => $client['data']['phone'],
+                        'id' => $client->id(),
+                        'name' => $client->data()['name'],
+                        'phone' => $client->data()['phone'],
                     ]
                 ]);
             }
