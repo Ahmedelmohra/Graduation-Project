@@ -324,11 +324,10 @@ class AuthController extends Controller
      * @return \Illuminate\Http\Response
      *                                                      
      */
-    public function checkOtpAndUpdatePassword(Request $request)
+    public function updatePassword(Request $request)
     {
         $validator =  Validator::make($request->all(), [
-            'id' => 'required|string',
-            'otp' => 'required|string',
+            'phone' => 'required|string',
             'password' => 'required|string|confirmed',
         ]);
 
@@ -341,37 +340,34 @@ class AuthController extends Controller
         }
 
         $otp = new Otp();
-        $find_otp = $otp->otp($request->id);
+        $client = new client();
 
-        if($find_otp){
-            $otp_data = $find_otp['data'];
-            if($otp_data['otp'] == $request->otp){
-                $client = new client();
-                $find_client = $client->find($request->id);
-                if($find_client){
-                    $client_data = $find_client['data'];
-                    $client_data['password'] = $request->password;
-                    $client->edit($request->id, $client_data);
+        $find_client = $client->findByPhone($request->phone);
+        if ($find_client) {
+            $client_id = $find_client->id();
+            $find_otp = $otp->userOtp($client_id);
+            if ($find_otp) {
+                if ($find_otp->data()['otp'] == (int) $request->otp) {
                     return response()->json([
                         'status' => true,
-                        'message' => 'password updated',
+                        'message' => 'OTP is valid'
                     ]);
-                }else{
+                } else {
                     return response()->json([
                         'status' => false,
-                        'message' => 'client not found'
+                        'message' => 'OTP is invalid'
                     ]);
                 }
-            }else{
+            } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'otp is incorrect'
+                    'message' => 'user not found'
                 ]);
             }
-        }else{
+        } else {
             return response()->json([
                 'status' => false,
-                'message' => 'otp not found'
+                'message' => 'user not found'
             ]);
         }
     }
