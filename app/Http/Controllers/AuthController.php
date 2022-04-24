@@ -253,7 +253,7 @@ class AuthController extends Controller
 
         $otp = new Otp();
         $otp->create([
-            'client_id' => $client['id'],
+            'client_id' => $client->id(),
             'otp' => $random_otp
         ]);
     }
