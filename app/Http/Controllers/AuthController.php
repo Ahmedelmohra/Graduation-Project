@@ -289,7 +289,6 @@ class AuthController extends Controller
     public function checkUserAndSendOtp(Request $request)
     {
         $validator =  Validator::make($request->all(), [
-            'id' => 'required|string',
             'phone' => 'required|string|max:11',
         ]);
 
@@ -302,22 +301,15 @@ class AuthController extends Controller
         }
 
         $client = new client();
-        $find_client = $client->find($request->id);
+        $find_client = $client->findByPhone($request->phone);
 
         if($find_client){
             $client_data = $find_client->data();
-            if($client_data['phone'] == $request->phone){
                 $this->generateOtp($client_data);
                 return response()->json([
                     'status' => true,
                     'message' => 'otp sent',
                 ]);
-            }else{
-                return response()->json([
-                    'status' => false,
-                    'message' => 'phone number is incorrect',
-                ]);
-            }
         }else{
             return response()->json([
                 'status' => false,
