@@ -129,6 +129,6 @@ class PaymentsController extends Controller
     {
         $company = new Company();
         $company = $company->findByName($name);
-        return $company->data()['name'];
+        return $company;
     }
 }
