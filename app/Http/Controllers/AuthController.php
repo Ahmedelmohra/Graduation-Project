@@ -304,12 +304,11 @@ class AuthController extends Controller
         $find_client = $client->findByPhone($request->phone);
 
         if($find_client){
-            $client_data = $find_client->data();
-                $this->generateOtp($find_client->id());
-                return response()->json([
-                    'status' => true,
-                    'message' => 'otp sent',
-                ]);
+            $this->generateOtp($find_client->id());
+            return response()->json([
+                'status' => true,
+                'message' => 'otp sent',
+            ]);
         }else{
             return response()->json([
                 'status' => false,

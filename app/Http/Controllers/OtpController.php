@@ -66,6 +66,54 @@ class OtpController extends Controller
         }
     }
 
+    public function checkOtpFromResetpassword(Request $request)
+    {
+        $validator =  Validator::make($request->all(), [
+            'phone' => 'required|string|max:11',
+            'otp' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation failed',
+                'data' => $validator->errors()
+            ]);
+        }
+
+        $client = new client();
+        $find_client = $client->findByPhone($request->phone);
+        if($find_client){
+            $client_id = $find_client->id();
+            $otp = new otp();
+            $find_otp = $otp->userOtp($client_id);
+            if($find_otp){
+                if($find_otp->data()['otp'] == (int) $request->otp){
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'OTP is valid'
+                    ]);
+                }else{
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'OTP is invalid'
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'user not found'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'user not found'
+            ]);
+        }
+        
+    }
+
     /**
      * resend otp
      * 

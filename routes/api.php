@@ -48,6 +48,7 @@ Route::get('/otps/{id}', [OtpController::class, 'show']);
 Route::post('/otps', [OtpController::class, 'store']); 
 Route::post('/checkOtp', [OtpController::class, 'check']);
 Route::post('/resend', [OtpController::class, 'resend']);
+Route::post('/check_reset_password_otp', [OtpController::class, 'checkOtpFromResetpassword']);
 
 
 //RECIPTS
