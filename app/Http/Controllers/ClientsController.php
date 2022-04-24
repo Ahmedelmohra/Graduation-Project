@@ -122,10 +122,10 @@ class ClientsController extends Controller
             return response()->json(['error' => 'client not have payments']);
     }
 
-    public function wallet($id)
+    public function wallet(Request $request)
     {
         $client = new client();
-        $wallet = $client->wallet($id);
+        $wallet = $client->wallet($request->client_id);
         if ($wallet)
             return $wallet;
         else

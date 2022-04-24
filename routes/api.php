@@ -32,8 +32,8 @@ Route::get('/clients/{id}', [ClientsController::class, 'show']);
 Route::post('/clients', [ClientsController::class, 'store']);
 Route::post('/clients/{id}', [ClientsController::class, 'update']);
 Route::get('/destroy_clients', [ClientsController::class, 'destroy']);
-Route::get('/clients/payments', [ClientsController::class, 'payments']);
-Route::get('/clients/{id}/wallet', [ClientsController::class, 'wallet']);
+// Route::get('/clients/payments', [ClientsController::class, 'payments']);
+// Route::get('/clients/{id}/wallet', [ClientsController::class, 'wallet']);
 
 
 //PAYMENT
@@ -60,7 +60,7 @@ Route::post('/recipts', [ReciptsController::class, 'store']);
 //COMPANY
 Route::get('/companies', [CompaniesController::class, 'index']);
 Route::get('/companies/{id}', [CompaniesController::class, 'show']);
-Route::get('/companies/{id}/payments', [CompaniesController::class, 'payments']);
+// Route::get('/companies/{id}/payments', [CompaniesController::class, 'payments']);
 
 
 //WALLET

@@ -25,4 +25,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // get route request
 Route::get('/clients/payments', [ClientsController::class, 'payments']);
+Route::get('/clients/wallet', [ClientsController::class, 'wallet']);
+
+Route::get('/companies/payments', [CompaniesController::class, 'payments']);
 Route::get('/companies_service', [CompaniesController::class, 'findByService']);

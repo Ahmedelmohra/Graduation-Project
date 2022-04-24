@@ -43,10 +43,10 @@ class CompaniesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function payments($id)
+    public function payments(Request $request)
     {
         $company = new company();
-        $company = $company->payments($id);
+        $company = $company->payments($request->company_id);
         return $company;
     }
 
