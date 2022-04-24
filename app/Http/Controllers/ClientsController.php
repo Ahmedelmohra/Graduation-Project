@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\Models\client;
 use Illuminate\Support\Facades\Validator;
 
@@ -128,7 +127,13 @@ class ClientsController extends Controller
         $client = new client();
         $wallet = $client->wallet($request->client_id);
         if ($wallet)
-            return $wallet;
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'id' => $wallet->id(),
+                    'balance' => $wallet->data()['balance']
+                ]
+            ]);
         else
             return response()->json([
                 'status' => false,
