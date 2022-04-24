@@ -91,15 +91,16 @@ class otp extends Model
     public function otp($id)
     {
         $collection = $this->firstore->collection('otp');
-        $documents = $collection->where('client_id', '==', $id)->documents()->rows();
-        $otp = [];
-        foreach ($documents as $document) {
+        $documents = $collection->where('client_id', '==', $id)->documents();
+        if ($documents->rows() != null) {
+            $document = $documents->rows()[0];
             $otp[] = [
                 'id' => $document->id(),
                 'data' => $document->data()
             ];
+
+            return $otp;
         }
-        return $otp;
     }
     /**
      * delete otp

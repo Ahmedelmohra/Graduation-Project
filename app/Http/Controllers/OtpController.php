@@ -111,7 +111,7 @@ class OtpController extends Controller
                 'message' => 'user not found'
             ]);
         }
-        
+
     }
 
     /**
@@ -170,11 +170,10 @@ class OtpController extends Controller
      */
     public function createWallet(Request $request)
     {
-        $otp = new otp();
-        $otps = $otp->otp($request->id);
-        if ($otps)
-            return $otps;
-        else
-            return response()->json(['error' => 'otp not found'], 404);
+        $wallet = new wallet();
+        $wallet->create([
+            'client_id' => $request->client_id,
+            'balance' => 0
+        ]);
     }
 }
