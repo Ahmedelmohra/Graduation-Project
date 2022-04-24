@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use App\Models\client;
 use Illuminate\Support\Facades\Validator;
 
@@ -129,7 +130,10 @@ class ClientsController extends Controller
         if ($wallet)
             return $wallet;
         else
-            return response()->json(['error' => 'client not found']);
+            return response()->json([
+                'status' => false,
+                'message' => 'client not have wallet'
+            ]);
     }
 
     /**
