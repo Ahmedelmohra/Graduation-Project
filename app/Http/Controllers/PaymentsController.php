@@ -39,7 +39,7 @@ class PaymentsController extends Controller
             'client_id' => 'required|string',
             'service_code' => 'required|string',
             'price' => 'required|string',
-            'feeds' => 'required|string',
+            'feeds' => 'required|numeric',
         ]);
 
         if($validator->fails()){
@@ -90,7 +90,7 @@ class PaymentsController extends Controller
     public function createReceipt($payment , $feeds)
     {
         $receipt = new recipts();
-        $total = (int) $payment['price'] + (int) $feeds;
+        $total = (double) $payment['price'] + (double) $feeds;
         $now_date = new Timestamp(new \DateTime('now'));
 
         $receipt = $receipt->create([
