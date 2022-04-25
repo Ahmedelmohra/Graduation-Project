@@ -84,7 +84,7 @@ class AuthController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'service' => $request->service,
-                    'password' => hash('sha256' , $password),
+                    'password' => $password, //hash('sha256', $password)
                     'bank_account' => $request->bank_account,
                     'commercial' => $request->commercial,
                     'tax_number' => $request->tax_number,
