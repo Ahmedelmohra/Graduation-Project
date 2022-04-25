@@ -67,12 +67,12 @@ class PaymentsController extends Controller
                     'company_name' => $company->data()['name'],
                     'client_id' => $payment->data()['client_id'],
                     'service_code' => (int) $payment->data()['service_code'],
-                    'price' => $payment->data()['price'],
+                    'price' => (float) $payment->data()['price'],
                     'receipt' => [
                         'id' => $receipt->id(),
                         'payment_id' => $receipt->data()['payment_id'],
-                        'feeds' => $receipt->data()['feeds'],
-                        'total' => $receipt->data()['total'],
+                        'feeds' => (double) $receipt->data()['feeds'],
+                        'total' => (double) $receipt->data()['total'],
                         'date' => $receipt->data()['date']->get()->format('Y-m-d H:i:s'),
                     ]
                 ]
