@@ -133,7 +133,7 @@ class client extends Model
                 'id' => $document->id(),
                 'company_name' => $company_name ?? null,
                 'total' => $get_receipt['data']['total'] ?? 0,
-                'date' => $get_receipt['data']['date'] ?? null,
+                'date' => $get_receipt['data']['date']->get()->format('Y-m-d H:i:s') ?? null,
                 // 'price' => $document->data()['price'],
                 // 'feeds' => $get_receipt['data']['feeds']
                 // 'user_id' => $document->data()['user_id'],
