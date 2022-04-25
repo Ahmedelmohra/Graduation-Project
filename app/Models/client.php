@@ -134,8 +134,8 @@ class client extends Model
                 'company_name' => $company_name ?? null,
                 'total' => $get_receipt['data']['total'] ?? 0,
                 'date' => $get_receipt['data']['date'] ?? null,
-                'price' => $document->data()['price'],
-                'feeds' => $get_receipt['data']['feeds']
+                // 'price' => $document->data()['price'],
+                // 'feeds' => $get_receipt['data']['feeds']
                 // 'user_id' => $document->data()['user_id'],
                 // 'service_code' => $document->data()['service_code'],
                 // 'price' => $document->data()['price'],
