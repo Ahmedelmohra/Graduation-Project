@@ -88,7 +88,7 @@ class OtpController extends Controller
             $client_id = $find_client->id();
             $find_otp = $otp->userOtp($client_id);
             if($find_otp){
-                if($find_otp->data()['otp'] == (int) $request->otp){
+                if($find_otp['otp'] == (int) $request->otp){
                     return response()->json([
                         'status' => true,
                         'message' => 'OTP is valid'
