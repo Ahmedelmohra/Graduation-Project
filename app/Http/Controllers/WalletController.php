@@ -48,7 +48,7 @@ class WalletController extends Controller
         $validator =  Validator::make($request->all(), [
             'client_id' => 'required|string',
             'password' => 'required|string',
-            'amount' => 'required|numeric'
+            'total' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -67,10 +67,10 @@ class WalletController extends Controller
             $request_password = $request->password . $get_client['data']['salt'];
             if ($request_password == $get_client['data']['password']) {
                 if ($get_wallet) {
-                    if ((int) $get_wallet->data()['balance'] > (int)$request->amount) {
+                    if ((int) $get_wallet->data()['balance'] > (int)$request->total) {
                         $data = [
                             'client_id' => $request->client_id,
-                            'balance' => (int) $get_wallet->data()['balance'] - (int)$request->amount
+                            'balance' => (int) $get_wallet->data()['balance'] - (int)$request->total
                         ];
                         $wallet->edit($get_wallet->id(), $data);
                         return response()->json([

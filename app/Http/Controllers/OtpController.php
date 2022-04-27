@@ -170,11 +170,15 @@ class OtpController extends Controller
      */
     public function createWallet(Request $request)
     {
+        $client = new client();
         $wallet = new wallet();
-        $wallet->create([
-            'client_id' => $request->client_id,
-            'balance' => 0
-        ]);
+        $find_client = $client->findByUserId($request->client_id);
+        if(!$find_client){
+            $wallet->create([
+                'client_id' => $request->client_id,
+                'balance' => 0
+            ]);
+        }
     }
 
     /**
