@@ -83,25 +83,32 @@ class otp extends Model
     }
 
     /**
-     * delete client
+     * get by otp
      * 
-     * @param  int $id
-     * @return array of client
+     * @param  int $otp
+     * @return array of otp
      */
-    public function otp($id)
+    public function findByOtp($otp)
     {
-        $collection = $this->firstore->collection('otp');
-        $documents = $collection->where('client_id', '==', $id)->documents();
+        $documents = $this->collection->where('otp', '=', $otp)->documents();
         if ($documents->rows() != null) {
             $document = $documents->rows()[0];
-            $otp[] = [
-                'id' => $document->id(),
-                'data' => $document->data()
-            ];
-
-            return $otp;
+            return $document;
         }
     }
+
+    /**
+     * get by id and delete otp
+     * 
+     * @param  int $id
+     * @return array of company
+     */
+    public function deleteThisOtp($id)
+    {
+        $document = $this->collection->document($id);
+        $document->delete();
+    }
+
     /**
      * delete otp
      *

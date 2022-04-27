@@ -153,7 +153,10 @@ class AuthController extends Controller
                     ]);
                 }
             } else {
-                return response()->json(['error' => 'Phone number is incorrect']);
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Phone number is incorrect'
+                ]);
             }
         }elseif($request->typeOfUser == 'company'){
             $company = $companies->findByEmail($request->email);
@@ -182,7 +185,10 @@ class AuthController extends Controller
                     ]);
                 }
             } else {
-                return response()->json(['error' => 'Email Address is incorrect']);
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Email Address is incorrect'
+                ]);
             }
         }
         
@@ -250,12 +256,21 @@ class AuthController extends Controller
     {
         $random_otp = rand(1000, 9999);
         // $otp_hash = hash('sha256', $random_otp);
-
+        $otp_hash = $random_otp;
         $otp = new Otp();
-        $otp->create([
-            'client_id' => $client_id,
-            'otp' => $random_otp
-        ]);
+        $user_otp = $otp->userOtp($client_id);
+        if($user_otp){
+            $get_otp = $otp->findByOtp($user_otp);
+            $otp->edit($get_otp->id() , [
+                'user_id' => $client_id,
+                'otp' => $otp_hash
+            ]);
+        }else{
+            $otp->create([
+                'user_id' => $client_id,
+                'otp' => $otp_hash
+            ]);
+        }
     }
 
     /**

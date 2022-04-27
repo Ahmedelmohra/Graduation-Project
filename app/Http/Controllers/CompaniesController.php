@@ -46,8 +46,13 @@ class CompaniesController extends Controller
     public function payments(Request $request)
     {
         $company = new company();
-        $company = $company->payments($request->company_id);
-        return $company;
+        $payments = $company->payments($request->company_id);
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'payments' => $payments
+            ]
+        ]);
     }
 
     /**

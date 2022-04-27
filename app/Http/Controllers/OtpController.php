@@ -82,10 +82,10 @@ class OtpController extends Controller
         }
 
         $client = new client();
+        $otp = new otp();
         $find_client = $client->findByPhone($request->phone);
         if($find_client){
             $client_id = $find_client->id();
-            $otp = new otp();
             $find_otp = $otp->userOtp($client_id);
             if($find_otp){
                 if($find_otp->data()['otp'] == (int) $request->otp){
@@ -174,6 +174,26 @@ class OtpController extends Controller
         $wallet->create([
             'client_id' => $request->client_id,
             'balance' => 0
+        ]);
+    }
+
+    /**
+     * delete otps
+     *
+     * @param Request $request
+     * 
+     */
+    public function deleteOtp()
+    {
+        $otp_obj = new otp();
+        $all_otp =  $otp_obj->getAll();
+        foreach($all_otp as $otp){
+            $otp_obj->deleteThisOtp($otp->id());
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'OTP is deleted successfully'
         ]);
     }
 }
