@@ -260,7 +260,7 @@ class AuthController extends Controller
         $otp = new Otp();
         $user_otp = $otp->userOtp($client_id);
         if($user_otp){
-            $get_otp = $otp->findByOtp($user_otp);
+            $get_otp = $otp->findByOtp($user_otp->data()['otp']);
             $otp->edit($get_otp->id() , [
                 'client_id' => $client_id,
                 'otp' => $otp_hash

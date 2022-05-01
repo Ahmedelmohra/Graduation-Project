@@ -156,4 +156,19 @@ class ClientsController extends Controller
             'message' => 'All users deleted successfully'
         ]);
     }
+
+    /**
+     * Remove the client resource from storage.
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyClient($id)
+    {
+        $client = new client();
+        $client->deleteClient($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'client deleted successfully'
+        ]);
+    }
 }

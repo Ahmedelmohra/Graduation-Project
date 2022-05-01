@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\Payment;
 use App\Models\recipts;
+use App\Models\ServiceCode;
 use Google\Cloud\Core\Timestamp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -31,8 +32,8 @@ class PaymentsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
         $payment = new Payment;
+        $codes = new ServiceCode;
 
         $validator = Validator::make($request->all(),[
             'company_name' => 'nullable|string',
@@ -120,7 +121,7 @@ class PaymentsController extends Controller
     }
 
     /**
-     * get caompany by id
+     * get company by id
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

@@ -144,12 +144,11 @@ class Company extends Model
             $id = $document->id();
             $receipt = new recipts();
             $client = new client();
-            $client_name = $client->find($document->data()['client_id']);
+            $find_client = $client->find($document->data()['client_id']);
             $get_receipt = $receipt->payment($id);
-            $company = $this->find($document->data()['company_id']);
             $payments[] = [
                 'id' => $document->id(),
-                'client_name' => $client_name['data']['name'],
+                // 'client_name' => $find_client['data']['name'],
                 'service_code' => $document->data()['service_code'],
                 'price' => $document->data()['price'],
                 'date' => $get_receipt['data']['date']->get()->format('d F Y h:i A') ?? null,

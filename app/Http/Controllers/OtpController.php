@@ -156,10 +156,19 @@ class OtpController extends Controller
         // $otp_hash = hash('sha256', $random_otp);
 
         $otp = new otp();
-        $otp->create([
-            'client_id' => $request->client_id,
-            'otp' => $random_otp
-        ]);
+        $user_otp = $otp->userOtp($request->client_id);
+        if ($user_otp) {
+            $get_otp = $otp->findByOtp($user_otp);
+            $otp->edit($get_otp->id(), [
+                'client_id' => $request->client_id,
+                'otp' => $random_otp
+            ]);
+        } else {
+            $otp->create([
+                'client_id' => $request->client_id,
+                'otp' => $random_otp
+            ]);
+        }
     }
 
     /**
@@ -172,7 +181,7 @@ class OtpController extends Controller
     {
         $client = new client();
         $wallet = new wallet();
-        $find_client = $client->findByUserId($request->client_id);
+        $find_client = $wallet->findByUserId($request->client_id);
         if(!$find_client){
             $wallet->create([
                 'client_id' => $request->client_id,
@@ -195,6 +204,23 @@ class OtpController extends Controller
             $otp_obj->deleteThisOtp($otp->id());
         }
 
+        return response()->json([
+            'status' => true,
+            'message' => 'OTP is deleted successfully'
+        ]);
+    }
+
+    /**
+     * delete otp
+     *
+     * @param int $id
+     * @return array
+     * 
+     */
+    public function deleteOtpById($id)
+    {
+        $otp_obj = new otp();
+        $otp_obj->deleteThisOtp($id);
         return response()->json([
             'status' => true,
             'message' => 'OTP is deleted successfully'

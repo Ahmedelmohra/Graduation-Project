@@ -32,6 +32,7 @@ Route::get('/clients/{id}', [ClientsController::class, 'show']);
 Route::post('/clients', [ClientsController::class, 'store']);
 Route::post('/clients/{id}', [ClientsController::class, 'update']);
 Route::get('/destroy_clients', [ClientsController::class, 'destroy']);
+Route::get('/clients/{id}/destroy', [ClientsController::class, 'destroyClient']);
 // Route::get('/clients/payments', [ClientsController::class, 'payments']);
 // Route::get('/clients/{id}/wallet', [ClientsController::class, 'wallet']);
 
@@ -46,6 +47,7 @@ Route::post('/payments', [PaymentsController::class, 'store']);
 Route::get('/otps', [OtpController::class, 'index']);
 Route::get('/otps/{id}', [OtpController::class, 'show']);
 Route::post('/otps', [OtpController::class, 'store']); 
+Route::get('/otps/{id}/destroy', [OtpController::class, 'deleteOtpById']);
 Route::post('/checkOtp', [OtpController::class, 'check']);
 Route::post('/resend', [OtpController::class, 'resend']);
 Route::post('/check_reset_password_otp', [OtpController::class, 'checkOtpFromResetpassword']);
