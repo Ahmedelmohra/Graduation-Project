@@ -59,6 +59,22 @@ class ServiceCode extends Model
     }
 
     /**
+     * create client
+     * 
+     * @param  array $data
+     * @return array of client
+     */
+    public function create(array $data)
+    {
+        $document = $this->collection->add($data);
+        return [
+            'id' => $document->id(),
+            'data' => $document->snapshot()->data()
+        ];
+    }
+
+
+    /**
      * get codes by company id
      * 
      * @param  int $id

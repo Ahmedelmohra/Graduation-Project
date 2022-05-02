@@ -12,7 +12,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ReciptsController;
 
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\ServiceCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +83,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/check_user', [AuthController::class, 'checkUserAndSendOtp']);
 Route::post('/reset_password', [AuthController::class, 'updatePassword']);
+
+// Codes
+Route::get('/codes', [ServiceCodeController::class, 'index']);
+Route::get('/codes/{id}', [ServiceCodeController::class, 'show']);
+Route::post('/codes', [ServiceCodeController::class, 'store']);
 
 
 
