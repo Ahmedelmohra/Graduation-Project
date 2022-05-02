@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\wallet;
 use App\Models\client;
+use App\Models\wallet;
+use App\Models\Payment;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class WalletController extends Controller
@@ -47,6 +48,7 @@ class WalletController extends Controller
     {
         $validator =  Validator::make($request->all(), [
             'client_id' => 'required|string',
+            'payment_id' => 'required|string',
             'password' => 'required|string',
             'total' => 'required|numeric'
         ]);
@@ -61,6 +63,8 @@ class WalletController extends Controller
 
         $wallet = new wallet();
         $client = new client();
+        $payment = new Payment();
+
         $get_client = $client->find($request->client_id);
         $get_wallet = $wallet->findByUserId($request->client_id);
         if ($get_client) {
@@ -80,19 +84,29 @@ class WalletController extends Controller
                     } else {
                         return response()->json([
                             'status' => false,
-                            'message' => 'Not enough balance'
+                            'message' => 'Not enough balance',
+                            'data' => [
+                                'client_id' => $request->client_id,
+                            ]
                         ]);
+                        $payment->deletePayment($request->payment_id);
                     }
                 } else {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Wallet not found'
+                        'message' => 'Wallet not found',
+                        'data' => [
+                            'client_id' => $request->client_id,
+                        ]
                     ]);
                 }
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Password is incorrect'
+                    'message' => 'Password is incorrect',
+                    'data' => [
+                        'client_id' => $request->client_id,
+                    ]
                 ]);
             }
         } else {
@@ -102,6 +116,17 @@ class WalletController extends Controller
             ]);
         }
     }
+
+    /**
+     * view charge for wallet.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function charge()
+    {
+        return view('charge_wallet');  
+    }
+
 
     /**
      * Update the wallet resource in storage.

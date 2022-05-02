@@ -102,6 +102,19 @@ class Payment extends Model
         return $payments;
     }
 
+    /**
+     * delete payment
+     * 
+     * @param  int $id
+     * @return array of payment
+     */
+    public function deletePayment($id)
+    {
+        $document = $this->collection->document($id);
+        $document->delete();
+        return $document->snapshot();
+    }
+
 }
 
     

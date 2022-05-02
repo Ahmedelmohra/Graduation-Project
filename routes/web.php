@@ -20,6 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/charge_wallet', [WalletController::class, 'charge'])->name('charge');
 Route::post('/charge_wallet', [WalletController::class, 'update'])->name('charge_wallet');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
