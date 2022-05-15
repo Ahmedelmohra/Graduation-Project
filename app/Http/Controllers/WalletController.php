@@ -48,7 +48,7 @@ class WalletController extends Controller
     {
         $validator =  Validator::make($request->all(), [
             'client_id' => 'required|string',
-            'payment_id' => 'required|string',
+             'payment_id' => 'required|string',
             'password' => 'required|string',
             'total' => 'required|numeric'
         ]);
@@ -82,6 +82,7 @@ class WalletController extends Controller
                             'message' => 'Payment done successfully'
                         ]);
                     } else {
+                        $payment->deletePayment($request->payment_id);
                         return response()->json([
                             'status' => false,
                             'message' => 'Not enough balance',
@@ -89,7 +90,7 @@ class WalletController extends Controller
                                 'client_id' => $request->client_id,
                             ]
                         ]);
-                        $payment->deletePayment($request->payment_id);
+                   
                     }
                 } else {
                     return response()->json([
