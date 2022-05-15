@@ -109,7 +109,7 @@ class PaymentsController extends Controller
         $receipt = $receipt->create([
             'payment_id' => $payment->id(),
             'feeds' => $feeds,
-            'total' => number_format($total, 2),
+            'total' => number_format($total, 2 , '.' , ','),
             'date' => $now_date
         ]);
 
