@@ -206,6 +206,7 @@ class AuthController extends Controller
     {
         if ($request->typeOfUser == 'user') {
             $validator =  Validator::make($request->all(), [
+                'email' => 'required|email',
                 'name' => 'required|string|max:255',
                 'phone' => 'required|string|max:11',
                 'password' => 'required|string',
