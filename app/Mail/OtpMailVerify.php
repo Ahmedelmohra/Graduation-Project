@@ -11,14 +11,16 @@ class OtpMailVerify extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $client;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($client)
     {
-        //
+        $this->client = $client;
     }
 
     /**
@@ -28,6 +30,7 @@ class OtpMailVerify extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->subject('Spay Email Verification')
+        ->view('email.otp');
     }
 }
