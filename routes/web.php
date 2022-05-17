@@ -1,10 +1,13 @@
 <?php
 
+use App\Mail\OtpMailVerify;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\CompaniesController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,6 +18,19 @@ use App\Http\Controllers\CompaniesController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+Route::get('/test', function () {
+
+    $client = [
+        'name' => 'Harsukh Makwana',
+        'otp' => '5986'
+    ];
+
+    \Mail::to('moamen.ali107@gmail.com')->send(new OtpMailVerify($client));
+
+    dd("success");
+});
 
 Route::get('/', function () {
     return view('welcome');
