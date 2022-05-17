@@ -58,6 +58,7 @@ class AuthController extends Controller
                 
                 $client = $clients->create([
                     'name' => $request->name,
+                    'email' => $request->email,
                     'phone' => $request->phone,
                     'password' => $request->password,
                     'salt' => $request->salt,
