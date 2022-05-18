@@ -33,13 +33,13 @@ class AuthController extends Controller
         }
 
         if($request->typeOfUser == 'user'){
-            $client = $clients->findByPhone($request->phone);
-            if ($client) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Phone number already exist'
-                ]);
-            }else{
+            // $client = $clients->findByPhone($request->phone);
+            // if ($client) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'Phone number already exist'
+            //     ]);
+            // }else{
                 $password = $request->password;
                 $salt = $request->salt;
                 $password = str_replace($salt, '', $password);
@@ -73,7 +73,7 @@ class AuthController extends Controller
                         'phone' => $client['data']['phone'],
                     ]
                 ]);
-            }
+            // }
         }elseif($request->typeOfUser == 'company'){
             $company = $companies->findByEmail($request->email);
             if ($company) {
